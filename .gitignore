@@ -34,7 +34,8 @@ Temporary Items
 /[Oo]bj/
 /[Bb]uild/
 /[Bb]uilds/
-/Assets/AssetStoreTools*
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
 
 ## Asset Bundles ##
 /AssetBundles/
