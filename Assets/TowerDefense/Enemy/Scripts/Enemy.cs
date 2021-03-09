@@ -5,6 +5,7 @@
  * Copyright (c) 2021 Andrei-Florin Ciobanu. All rights reserved. 
  */
 
+using System;
 using UnityEngine;
 
 using TowerDefense.Map.Scripts;
@@ -18,6 +19,10 @@ namespace TowerDefense.Enemy.Scripts {
 		private WaypointManager _waypointManager => WaypointManager.Instance;
 		private int _waypointIndex = 0;
 		private Vector3 _originalPosition;
+
+		private bool _shouldStartMoving = false;
+
+		public event Action OnDeath;
 		
 		#region Lifecycle
 
@@ -26,13 +31,26 @@ namespace TowerDefense.Enemy.Scripts {
 		}
 
 		private void Update() {
+			if (!this._shouldStartMoving) {
+				return;
+			}
 			if (this._waypointManager.GetWaypointsArrayLength().Equals(this._waypointIndex)) {
+				this.OnDeath?.Invoke();
+				
+				this._shouldStartMoving = false;
 				this._waypointIndex = 0;
 				this.transform.position = this._originalPosition;
-
 			}
 			this.MoveEnemyTowardsWaypoint(this._waypointManager.GetWaypointAtIndex(this._waypointIndex));
 			this.CheckDistanceBetweenEnemyAndWaypoint();
+		}
+		
+		#endregion
+		
+		#region Public
+
+		public void StartEnemyMovement() {
+			this._shouldStartMoving = true;
 		}
 		
 		#endregion
