@@ -9,18 +9,18 @@ using UnityEngine;
 
 namespace TowerDefense.Map.Scripts {
 	public class WaypointManager : MonoBehaviour {
-		private static WaypointManager s_instance;
-		public static WaypointManager Instance {
-			get {
-				if (s_instance == null) {
-					s_instance = FindObjectOfType<WaypointManager>();
-				}
-				return s_instance;
-			}
-		}
+		public static WaypointManager Instance { get; private set; }
 
 		[SerializeField] 
 		private Transform[] _waypoints;
+
+		#region Lifecycle
+
+		private void Awake() {
+			Instance = this;
+		}
+
+		#endregion
 		
 		#region Public
 
