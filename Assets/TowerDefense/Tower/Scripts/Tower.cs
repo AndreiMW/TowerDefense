@@ -5,7 +5,6 @@
  * Copyright (c) 2021 Andrei-Florin Ciobanu. All rights reserved. 
  */
 
-using System;
 using UnityEngine;
 
 namespace TowerDefense.Tower.Scripts {
@@ -29,6 +28,8 @@ namespace TowerDefense.Tower.Scripts {
 		
 		private Transform _currentLockedTarget;
 
+		#region Lifecycle
+		
 		private void Start() {
 			InvokeRepeating(nameof(this.UpdateTarget), 0f,0.25f);
 		}
@@ -46,6 +47,10 @@ namespace TowerDefense.Tower.Scripts {
 
 			this._fireCooldown -= Time.deltaTime;
 		}
+		
+		#endregion
+		
+		#region Private
 
 		private void UpdateTarget() {
 			GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
@@ -84,5 +89,7 @@ namespace TowerDefense.Tower.Scripts {
 			Gizmos.color = Color.red;
 			Gizmos.DrawWireSphere(this.transform.position, this._range);
 		}
+		
+		#endregion
 	}
 }

@@ -13,7 +13,7 @@ namespace TowerDefense.Map.Scripts {
 		[SerializeField]
 		private float _panSpeed = 30f;
 		[SerializeField]
-		private float _panBorderThickness = 10f;
+		private float _screenPanOffset = 10f;
 		[SerializeField]
 		private float _scrollSpeed = 5f;
 		[SerializeField]
@@ -22,22 +22,22 @@ namespace TowerDefense.Map.Scripts {
 		private float _maxY = 80f;
 	
 		#region Lifecycle
+		
 		private void Update() {
 			
-
-			if (Input.mousePosition.y >= Screen.height - this._panBorderThickness) {
+			if (Input.mousePosition.y >= Screen.height - this._screenPanOffset) {
 				this.transform.Translate(this._panSpeed * Time.deltaTime * Vector3.forward, Space.World);
 			}
 
-			if (Input.mousePosition.y <= this._panBorderThickness) {
+			if (Input.mousePosition.y <= this._screenPanOffset) {
 				this.transform.Translate(this._panSpeed * Time.deltaTime * Vector3.back, Space.World);
 			}
 
-			if (Input.mousePosition.x >= Screen.width - this._panBorderThickness) {
+			if (Input.mousePosition.x >= Screen.width - this._screenPanOffset) {
 				this.transform.Translate(this._panSpeed * Time.deltaTime * Vector3.right, Space.World);
 			}
 
-			if (Input.mousePosition.x <= this._panBorderThickness) {
+			if (Input.mousePosition.x <= this._screenPanOffset) {
 				this.transform.Translate(this._panSpeed * Time.deltaTime * Vector3.left, Space.World);
 			}
 

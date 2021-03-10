@@ -5,8 +5,8 @@
  * Copyright (c) 2021 Andrei-Florin Ciobanu. All rights reserved. 
  */
 
-using System;
 using System.Collections;
+
 using UnityEngine;
 
 namespace TowerDefense.Enemy.Scripts {

@@ -5,9 +5,9 @@
  * Copyright (c) 2021 Andrei-Florin Ciobanu. All rights reserved. 
  */
 
-using System;
-using TowerDefense.Tower.Scripts;
 using UnityEngine;
+
+using TowerDefense.Tower.Scripts;
 
 namespace TowerDefense.Map.Scripts {
 	public class MapTileNode : MonoBehaviour {

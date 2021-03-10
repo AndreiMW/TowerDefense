@@ -5,7 +5,6 @@
  * Copyright (c) 2021 Andrei-Florin Ciobanu. All rights reserved. 
  */
 
-using System;
 using UnityEngine;
 
 namespace TowerDefense.Tower.Scripts {
@@ -14,9 +13,7 @@ namespace TowerDefense.Tower.Scripts {
 		[SerializeField] 
 		private float _speed;
 
-		public void SetTargetToFollow(Transform target) {
-			this._target = target;
-		}
+		#region Lifecycle
 
 		private void Update() {
 			if (!this._target) {
@@ -33,10 +30,24 @@ namespace TowerDefense.Tower.Scripts {
 			}
 			this.transform.Translate(bulletDirection.normalized * distanceThisFrame, Space.World);
 		}
+		
+		#endregion
+		
+		#region Public
+		
+		public void SetTargetToFollow(Transform target) {
+			this._target = target;
+		}
+		
+		#endregion
+		
+		#region Private
 
 		private void Hit() {
 			Destroy(this.gameObject);
 			Destroy(this._target.gameObject);
 		}
+		
+		#endregion
 	}
 }

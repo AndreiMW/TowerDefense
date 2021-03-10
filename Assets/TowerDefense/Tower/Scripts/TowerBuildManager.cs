@@ -5,7 +5,6 @@
  * Copyright (c) 2021 ATiStudios. All rights reserved. 
  */
 
-using System;
 using UnityEngine;
 
 namespace TowerDefense.Tower.Scripts {
