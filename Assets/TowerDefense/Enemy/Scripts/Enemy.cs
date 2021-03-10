@@ -44,7 +44,18 @@ namespace TowerDefense.Enemy.Scripts {
 			this.MoveEnemyTowardsWaypoint(this._waypointManager.GetWaypointAtIndex(this._waypointIndex));
 			this.CheckDistanceBetweenEnemyAndWaypoint();
 		}
-		
+
+		private void OnTriggerEnter(Collider other) {
+			if (other.gameObject.tag.Equals("Bullet")) {
+				this._shouldStartMoving = false;
+				this._waypointIndex = 0;
+				this.transform.position = this._originalPosition;
+				this.OnDeath?.Invoke();
+				
+				Destroy(other.gameObject);
+			}
+		}
+
 		#endregion
 		
 		#region Public
@@ -52,7 +63,7 @@ namespace TowerDefense.Enemy.Scripts {
 		public void StartEnemyMovement() {
 			this._shouldStartMoving = true;
 		}
-		
+
 		#endregion
 		
 		#region Private

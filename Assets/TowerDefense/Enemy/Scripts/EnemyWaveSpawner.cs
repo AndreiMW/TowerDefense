@@ -9,87 +9,82 @@ using System.Collections;
 
 using UnityEngine;
 
+using TowerDefense.Managers;
+
 namespace TowerDefense.Enemy.Scripts {
 	public class EnemyWaveSpawner : MonoBehaviour {
-		// [SerializeField] 
-		// private Enemy[] _enemies;
-
-		// [SerializeField] 
-		// private float _timeBetweenEnemies = 1f;
 
 		[SerializeField] 
 		private Enemy _enemyPrefab;
 
 		[SerializeField] 
+		private int _enemyPoolSize;
+		
+		[SerializeField] 
 		private float _timeBetweenWaves;
+
+		private bool _isWaveComplete = true;
 
 		private float _countdown = 5;
 		private int _waveNumber = 0;
-		private int _enemyIndex = 0;
-		private int _numberOfDeadEnemies = 0;
-		private bool _isWaveStarted = false;
-		
+		private int _numberOfEnemiesKilled = 0;
+
+		private Enemy[] _enemiesPool;
+
 		#region Lifecycle
 
-		private void Start() {
-			// foreach (Enemy enemy in this._enemies) {
-				// enemy.OnDeath += this.HandleOnEnemyDeath;
-			// }
+		private void Awake() {
+			this._enemiesPool = new Enemy[this._enemyPoolSize];
 
-			this._isWaveStarted = true;
+			for (int i = 0; i < this._enemyPoolSize; i++) {
+				this._enemiesPool[i] = Instantiate(this._enemyPrefab, this.transform.position, this.transform.rotation);
+				Enemy enemy = this._enemiesPool[i];
+				enemy.gameObject.SetActive(false);
+				enemy.OnDeath += ()=> {
+					enemy.gameObject.SetActive(false);
+					this._numberOfEnemiesKilled++;
+					this.CheckIfWaveIsComplete();
+				};
+			}
 		}
 
 		private void Update() {
-			if (this._countdown <= 0f) {
-				StartCoroutine(this.SpawnWave());
-				this._countdown = this._timeBetweenWaves;
+			if (this._isWaveComplete) {
+				if (this._countdown <= 0f) {
+					this.SpawnWave();
+					this._countdown = this._timeBetweenWaves;
+					this._isWaveComplete = false;
+				}
+				ScoreManager.Instance.SetCountDownText(Mathf.FloorToInt(this._countdown + 1));
+				this._countdown -= Time.deltaTime;	
 			}
-
-			this._countdown -= Time.deltaTime;
-			// if (this._isWaveStarted) {
-			// 	if (this._timeBetweenEnemies <= 0f) {
-			// 		this._enemies[this._enemyIndex].StartEnemyMovement();
-			// 	
-			// 		if (this._enemyIndex.Equals(this._enemies.Length - 1)) {
-			// 			this._enemyIndex = 0;
-			// 			this._isWaveStarted = false;
-			// 		} else {
-			// 			this._enemyIndex++;
-			// 		}
-			// 	
-			// 		this._timeBetweenEnemies = 1.5f;
-			// 	}
-			//
-			// 	this._timeBetweenEnemies -= Time.deltaTime;	
-			// }
 		}
 
 		#endregion
 
 		#region Private
 
-		private IEnumerator SpawnWave() {
+		private void SpawnWave() {
 			this._waveNumber++;
-			
-			for (int i = 0; i < this._waveNumber; i++) {
-				this.SpawnEnemy();
+			StartCoroutine(this.SpawnEnemiesFromPool(this._waveNumber));
+		}
+
+		private IEnumerator SpawnEnemiesFromPool(int enemiesToSpawn) {
+			for (int i = 0; i < enemiesToSpawn; i++) {
+				Enemy enemy = this._enemiesPool[i];
+				enemy.gameObject.SetActive(true);
+				enemy.StartEnemyMovement();
+				
 				yield return new WaitForSeconds(0.2f);
 			}
 		}
 
-		private void SpawnEnemy() {
-			Enemy enemy = Instantiate(this._enemyPrefab, this.transform.position, this.transform.rotation);
-			enemy.StartEnemyMovement();
-			enemy.OnDeath += () => Destroy(enemy.gameObject);
+		private void CheckIfWaveIsComplete() {
+			if (this._waveNumber == this._numberOfEnemiesKilled) {
+				this._isWaveComplete = true;
+				this._numberOfEnemiesKilled = 0;
+			}
 		}
-
-		// private void HandleOnEnemyDeath() {
-		// 	this._numberOfDeadEnemies++;
-		//
-		// 	if (this._numberOfDeadEnemies.Equals(this._enemies.Length)) {
-		// 		Debug.Log("WAVE COMPLETE");
-		// 	}
-		// }
 
 		#endregion
 	}

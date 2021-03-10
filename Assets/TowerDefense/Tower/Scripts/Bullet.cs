@@ -23,11 +23,6 @@ namespace TowerDefense.Tower.Scripts {
 
 			Vector3 bulletDirection = this._target.position - this.transform.position;
 			float distanceThisFrame = this._speed * Time.deltaTime;
-			//bullet hit logic, change with observer
-			if (bulletDirection.magnitude <= distanceThisFrame) {
-				this.Hit();
-				return;
-			}
 			this.transform.Translate(bulletDirection.normalized * distanceThisFrame, Space.World);
 		}
 		
@@ -37,15 +32,6 @@ namespace TowerDefense.Tower.Scripts {
 		
 		public void SetTargetToFollow(Transform target) {
 			this._target = target;
-		}
-		
-		#endregion
-		
-		#region Private
-
-		private void Hit() {
-			Destroy(this.gameObject);
-			Destroy(this._target.gameObject);
 		}
 		
 		#endregion
