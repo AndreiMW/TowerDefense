@@ -51,8 +51,6 @@ namespace TowerDefense.Enemy.Scripts {
 				this._waypointIndex = 0;
 				this.transform.position = this._originalPosition;
 				this.OnDeath?.Invoke();
-				
-				Destroy(other.gameObject);
 			}
 		}
 

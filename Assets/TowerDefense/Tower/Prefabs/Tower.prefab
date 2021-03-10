@@ -113,8 +113,9 @@ MonoBehaviour:
   _range: 9
   turnSpeed: 10
   _rateOfFire: 1
-  _bulletPrefab: {fileID: 1122281838729875251, guid: ecd435c5c22894241be7d8463a8040fb, type: 3}
+  _bulletPrefab: {fileID: 8753822808306184597, guid: ecd435c5c22894241be7d8463a8040fb, type: 3}
   _bulletSpawnPoint: {fileID: 4081862767101051818}
+  _bulletPoolSize: 5
 --- !u!1 &8162397714809113570
 GameObject:
   m_ObjectHideFlags: 0
