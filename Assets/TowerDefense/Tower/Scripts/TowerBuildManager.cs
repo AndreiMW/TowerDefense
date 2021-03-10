@@ -13,6 +13,9 @@ namespace TowerDefense.Tower.Scripts {
 
 		[SerializeField]
 		private GameObject _towerPrefab;
+
+		[SerializeField] 
+		private Vector3 _positionOffset;
 		
 		#region Lifecycle
 
@@ -27,7 +30,7 @@ namespace TowerDefense.Tower.Scripts {
 		#region Public
 
 		public GameObject BuildTower(Transform targetNodeToInstantiate) {
-			GameObject tower = Instantiate(this._towerPrefab, targetNodeToInstantiate.position, targetNodeToInstantiate.rotation);
+			GameObject tower = Instantiate(this._towerPrefab, targetNodeToInstantiate.position + this._positionOffset, targetNodeToInstantiate.rotation);
 			return tower;
 		}
 		
