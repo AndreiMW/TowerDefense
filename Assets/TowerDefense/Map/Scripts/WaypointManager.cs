@@ -17,7 +17,9 @@ namespace TowerDefense.Map.Scripts {
 		#region Lifecycle
 
 		private void Awake() {
-			Instance = this;
+			if (!Instance) {
+				Instance = this;	
+			}
 		}
 
 		#endregion
