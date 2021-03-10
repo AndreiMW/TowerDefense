@@ -214,7 +214,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f7b308179024b98a8361dcc50aa0c08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _towerPrefab: {fileID: 8162397714661207571, guid: 5724fae2bd78f0441bedf8416e5ad469, type: 3}
+  _towerPrefab: {fileID: 9184092846922306903, guid: 8b81f1d9d49566d428778328020dcb19, type: 3}
+  _positionOffset: {x: 0, y: -1.75, z: 0}
 --- !u!4 &25427456
 Transform:
   m_ObjectHideFlags: 0
@@ -227,7 +228,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &31118254
 PrefabInstance:
@@ -2274,7 +2275,6 @@ GameObject:
   m_Component:
   - component: {fileID: 705507995}
   - component: {fileID: 705507994}
-  - component: {fileID: 705507996}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -2358,23 +2358,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!114 &705507996
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 705507993}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24dd2965c80d4899a8e9703f3cd9015d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _panSpeed: 30
-  _screenPanOffset: 10
-  _scrollSpeed: 5
-  _minY: 10
-  _maxY: 80
 --- !u!1001 &726470106
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4823,7 +4806,7 @@ RectTransform:
   - {fileID: 2048865862}
   - {fileID: 1757646900}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -6296,7 +6279,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2112774985
 PrefabInstance:
