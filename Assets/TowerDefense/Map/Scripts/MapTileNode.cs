@@ -40,10 +40,16 @@ namespace TowerDefense.Map.Scripts {
 		}
 
 		private void OnMouseEnter() {
+			if (this._turret) {
+				return;
+			}
 			this._renderer.material.color = this._hoveringColor;
 		}
 
 		private void OnMouseExit() {
+			if (this._turret) {
+				return;
+			}
 			this._renderer.material.color = this._originalColor;
 		}
 		
