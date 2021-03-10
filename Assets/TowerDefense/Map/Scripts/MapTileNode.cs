@@ -37,6 +37,7 @@ namespace TowerDefense.Map.Scripts {
 			}
 
 			this._turret = TowerBuildManager.Instance.BuildTower(this.transform);
+			this._renderer.material.color = this._originalColor;
 		}
 
 		private void OnMouseEnter() {
