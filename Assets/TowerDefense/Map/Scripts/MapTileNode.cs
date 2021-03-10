@@ -5,14 +5,17 @@
  * Copyright (c) 2021 Andrei-Florin Ciobanu. All rights reserved. 
  */
 
+using System;
+using TowerDefense.Tower.Scripts;
 using UnityEngine;
 
 namespace TowerDefense.Map.Scripts {
 	public class MapTileNode : MonoBehaviour {
 		[SerializeField]
 		private Color _hoveringColor;
-
 		private Color _originalColor;
+		
+		private GameObject _turret;
 		
 		private Renderer _renderer;
 
@@ -26,7 +29,16 @@ namespace TowerDefense.Map.Scripts {
 		#endregion
 		
 		#region MouseHandling
-		
+
+		private void OnMouseDown() {
+			if (this._turret) {
+				Debug.Log("Can't build here, sry");
+				return;
+			}
+
+			this._turret = TowerBuildManager.Instance.BuildTower(this.transform);
+		}
+
 		private void OnMouseEnter() {
 			this._renderer.material.color = this._hoveringColor;
 		}
