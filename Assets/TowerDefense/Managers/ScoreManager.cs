@@ -15,6 +15,13 @@ namespace TowerDefense.Managers {
 		[SerializeField] 
 		private TMP_Text _countdownToNextWaveText;
 		
+		[SerializeField] 
+		private TMP_Text _waveNumberText;
+
+
+		[SerializeField]
+		private CanvasGroup _nextWaveTimerParent;
+		
 		
 		#region Lifecycle
 
@@ -28,8 +35,20 @@ namespace TowerDefense.Managers {
 		
 		#region Public
 
+		public void ShowNextWaveCountdownTimer() {
+			this._nextWaveTimerParent.alpha = 1f;
+		}
+		
+		public void HideNextWaveCountdownTimer() {
+			this._nextWaveTimerParent.alpha = 0f;
+		}
+		
 		public void SetCountDownText(int timeToNextWave) {
 			this._countdownToNextWaveText.text = $"Next wave in: {timeToNextWave}";
+		}
+
+		public void SetWaveNumberText(int waveNumber) {
+			this._waveNumberText.text = $"Wave: {waveNumber}";
 		}
 		
 		#endregion
