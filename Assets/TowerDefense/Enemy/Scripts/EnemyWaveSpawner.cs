@@ -72,6 +72,8 @@ namespace TowerDefense.Enemy.Scripts {
 
 		private void SpawnWave() {
 			this._waveNumber++;
+			ScoreManager.Instance.SetWaveNumberText(this._waveNumber);
+			ScoreManager.Instance.HideNextWaveCountdownTimer();
 			StartCoroutine(this.SpawnEnemiesFromPool(this._numberOfEnemiesInWave));
 		}
 
@@ -90,6 +92,7 @@ namespace TowerDefense.Enemy.Scripts {
 			if (this._numberOfEnemiesInWave == this._numberOfEnemiesKilled) {
 				this._isWaveComplete = true;
 				this._numberOfEnemiesKilled = 0;
+				ScoreManager.Instance.ShowNextWaveCountdownTimer();
 
 				if (this._waveNumber % 2 == 0) {
 					this._numberOfEnemiesInWave += 2;
