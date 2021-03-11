@@ -37,6 +37,8 @@ namespace TowerDefense.Enemy.Scripts {
 
 		private float _enemyHealthIncrement = 0f;
 
+		private ScoreManager _scoreManagerInstance;
+
 		#region Lifecycle
 
 		private void Awake() {
@@ -54,6 +56,10 @@ namespace TowerDefense.Enemy.Scripts {
 			}
 		}
 
+		private void Start() {
+			this._scoreManagerInstance = ScoreManager.Instance;
+		}
+
 		private void Update() {
 			if (this._isWaveComplete) {
 				if (this._countdown <= 0f) {
@@ -61,7 +67,7 @@ namespace TowerDefense.Enemy.Scripts {
 					this._countdown = this._timeBetweenWaves;
 					this._isWaveComplete = false;
 				}
-				ScoreManager.Instance.SetCountDownText(Mathf.FloorToInt(this._countdown + 1));
+				this._scoreManagerInstance.SetCountDownText(Mathf.FloorToInt(this._countdown + 1));
 				this._countdown -= Time.deltaTime;	
 			}
 		}
@@ -72,8 +78,8 @@ namespace TowerDefense.Enemy.Scripts {
 
 		private void SpawnWave() {
 			this._waveNumber++;
-			ScoreManager.Instance.SetWaveNumberText(this._waveNumber);
-			ScoreManager.Instance.HideNextWaveCountdownTimer();
+			this._scoreManagerInstance.SetWaveNumberText(this._waveNumber);
+			this._scoreManagerInstance.HideNextWaveCountdownTimer();
 			StartCoroutine(this.SpawnEnemiesFromPool(this._numberOfEnemiesInWave));
 		}
 
@@ -92,7 +98,7 @@ namespace TowerDefense.Enemy.Scripts {
 			if (this._numberOfEnemiesInWave == this._numberOfEnemiesKilled) {
 				this._isWaveComplete = true;
 				this._numberOfEnemiesKilled = 0;
-				ScoreManager.Instance.ShowNextWaveCountdownTimer();
+				this._scoreManagerInstance.ShowNextWaveCountdownTimer();
 
 				if (this._waveNumber % 2 == 0) {
 					this._numberOfEnemiesInWave += 2;
