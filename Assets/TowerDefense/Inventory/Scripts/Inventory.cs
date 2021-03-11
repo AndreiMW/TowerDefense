@@ -6,6 +6,7 @@
  */
 
 using System;
+using TMPro;
 using TowerDefense.Tower.Scripts;
 using UnityEngine;
 using UnityEngine.UI;
@@ -29,14 +30,24 @@ namespace TowerDefense.Inventory.Scripts {
 		[SerializeField]
 		private Button _powerTowerbutton;
 
+		[SerializeField] 
+		private TMP_Text _moneyAmountText;
+
 		private TowerBuildManager _towerBuildInstance;
 
 		private float _turretCost;
 		private float _moneyAmount = 100;
+
+		public static Inventory Instance;
 		
 		#region Lifecycle
 
 		private void Awake() {
+			
+			if (!Instance) {
+				Instance = this;
+			}
+			
 			this._basicTowerButton.onClick.AddListener(this.GetBasicCannon);
 			this._fastFireRateTowerButton.onClick.AddListener(this.GetFastFireRateCannon);
 			this._powerTowerbutton.onClick.AddListener(this.GetPowerCannon);
@@ -50,6 +61,15 @@ namespace TowerDefense.Inventory.Scripts {
 		
 		#region Public
 
+		public void AddMoney(float moneyAmount) {
+			this._moneyAmount += moneyAmount;
+			this.SetMoneyAmountText();
+		}
+		
+		#endregion
+		
+		#region Private
+
 		private void GetBasicCannon() {
 			this._turretCost = 50f;
 			if (this._moneyAmount < 50) {
@@ -58,6 +78,7 @@ namespace TowerDefense.Inventory.Scripts {
 			}
 
 			this._moneyAmount -= this._turretCost;
+			this.SetMoneyAmountText();
 			this._towerBuildInstance.SetTowerPrefab(this._basicTowerPrefab);
 			this._towerBuildInstance.IsAllowedToBuild = true;
 		}
@@ -69,6 +90,7 @@ namespace TowerDefense.Inventory.Scripts {
 				return;
 			}
 			this._moneyAmount -= this._turretCost;
+			this.SetMoneyAmountText();
 			this._towerBuildInstance.SetTowerPrefab(this._fastFireRateTowerPrefab);
 			this._towerBuildInstance.IsAllowedToBuild = true;
 		}
@@ -80,8 +102,13 @@ namespace TowerDefense.Inventory.Scripts {
 				return;
 			}
 			this._moneyAmount -= this._turretCost;
+			this.SetMoneyAmountText();
 			this._towerBuildInstance.SetTowerPrefab(this._powerTowerPrefab);
 			this._towerBuildInstance.IsAllowedToBuild = true;
+		}
+
+		private void SetMoneyAmountText() {
+			this._moneyAmountText.text = this._moneyAmount.ToString();
 		}
 		
 		#endregion

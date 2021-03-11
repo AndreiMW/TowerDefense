@@ -36,6 +36,7 @@ namespace TowerDefense.Enemy.Scripts {
 		private float _timeBetweenEnemies = 0.7f;
 
 		private float _enemyHealthIncrement = 0f;
+		private float _moneyAmountPerKill = 5f;
 
 		private ScoreManager _scoreManagerInstance;
 
@@ -49,6 +50,7 @@ namespace TowerDefense.Enemy.Scripts {
 				Enemy enemy = this._enemiesPool[i];
 				enemy.gameObject.SetActive(false);
 				enemy.OnDeath += ()=> {
+					Inventory.Scripts.Inventory.Instance.AddMoney(this._moneyAmountPerKill * (enemy.GetHealth()/100));
 					enemy.gameObject.SetActive(false);
 					this._numberOfEnemiesKilled++;
 					this.CheckIfWaveIsComplete();
@@ -103,6 +105,7 @@ namespace TowerDefense.Enemy.Scripts {
 				if (this._waveNumber % 2 == 0) {
 					this._numberOfEnemiesInWave += 2;
 					this._enemyHealthIncrement += 20;
+					this._moneyAmountPerKill += 10;
 				}
 			}
 		}
