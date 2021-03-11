@@ -44,24 +44,22 @@ namespace TowerDefense.Enemy.Scripts {
 			if (!this._shouldStartMoving) {
 				return;
 			}
-			if (this._waypointManager.GetWaypointsArrayLength().Equals(this._waypointIndex)) {
-				this.OnDeath?.Invoke();
-				
-				this._shouldStartMoving = false;
-				this._waypointIndex = 0;
-				this.transform.position = this._originalPosition;
-			}
+			
 			this.MoveEnemyTowardsWaypoint(this._waypointManager.GetWaypointAtIndex(this._waypointIndex));
 			this.CheckDistanceBetweenEnemyAndWaypoint();
 		}
+		#endregion
+		
+		#region Collision
 
 		private void OnTriggerEnter(Collider other) {
 			if (other.gameObject.tag.Equals("Bullet")) {
 				Bullet bullet = other.GetComponent<Bullet>();
+				bullet.BulletReachedEnemy();
 				this.TakeDamage(bullet.GetBulletDamage());
 			}
 		}
-
+		
 		#endregion
 		
 		#region Public
@@ -84,6 +82,10 @@ namespace TowerDefense.Enemy.Scripts {
 
 		public void SetSpeed(float speed) {
 			this._speed = speed;
+		}
+
+		public void KillEnemy() {
+			this.Kill();
 		}
 
 		#endregion
