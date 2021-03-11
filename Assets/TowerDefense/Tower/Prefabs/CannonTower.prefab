@@ -204,7 +204,6 @@ GameObject:
   - component: {fileID: 9184092846922400619}
   - component: {fileID: 9184092846925299067}
   - component: {fileID: 9184092846924705877}
-  - component: {fileID: 5969579860244699500}
   m_Layer: 0
   m_Name: rotater
   m_TagString: Untagged
@@ -276,25 +275,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &5969579860244699500
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9184092846922252751}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b84892ce43482247849475ebabc704c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _range: 8
-  turnSpeed: 15
-  _rateOfFire: 1
-  _bulletPrefab: {fileID: 8753822808306184597, guid: ecd435c5c22894241be7d8463a8040fb, type: 3}
-  _bulletSpawnPoint: {fileID: 4960633043521885887}
-  _bulletPoolSize: 5
-  _bulletDamage: 35
 --- !u!1 &9184092846922306903
 GameObject:
   m_ObjectHideFlags: 0
@@ -304,6 +284,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9184092846922473205}
+  - component: {fileID: 6042307686139726510}
   m_Layer: 0
   m_Name: CannonTower
   m_TagString: Untagged
@@ -327,3 +308,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6042307686139726510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9184092846922306903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b84892ce43482247849475ebabc704c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _range: 5
+  turnSpeed: 15
+  _rateOfFire: 1
+  _bulletPrefab: {fileID: 8753822808306184597, guid: ecd435c5c22894241be7d8463a8040fb, type: 3}
+  _bulletSpawnPoint: {fileID: 4960633043521885887}
+  _bulletPoolSize: 5
+  _bulletDamage: 35

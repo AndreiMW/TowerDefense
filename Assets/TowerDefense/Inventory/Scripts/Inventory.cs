@@ -8,6 +8,7 @@
 using System;
 using TMPro;
 using TowerDefense.Tower.Scripts;
+using TowerDefense.Towers.Scripts;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,13 +16,13 @@ using UnityEngine.UI;
 namespace TowerDefense.Inventory.Scripts {
 	public class Inventory : MonoBehaviour {
 		[SerializeField] 
-		private GameObject _basicTowerPrefab;
+		private PlayerTower _basicTowerPrefab;
 		
 		[SerializeField] 
-		private GameObject _fastFireRateTowerPrefab;
+		private PlayerTower _fastFireRateTowerPrefab;
 		
 		[SerializeField] 
-		private GameObject _powerTowerPrefab;
+		private PlayerTower _powerTowerPrefab;
 
 		[SerializeField]
 		private Button _basicTowerButton;

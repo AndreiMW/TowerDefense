@@ -6,11 +6,10 @@
  */
 
 using System.Collections.Generic;
-using TowerDefense.Tower.Scripts;
 using UnityEngine;
 
-namespace TowerDefense.Towers.Scripts {
-	public class Tower : MonoBehaviour {
+namespace TowerDefense.Tower.Scripts {
+	public class PlayerTower : MonoBehaviour {
 		[SerializeField] 
 		private float _range;
 

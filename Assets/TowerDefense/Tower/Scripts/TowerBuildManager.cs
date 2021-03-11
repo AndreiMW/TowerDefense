@@ -5,16 +5,19 @@
  * Copyright (c) 2021 ATiStudios. All rights reserved. 
  */
 
+using TowerDefense.Tower.Scripts;
 using UnityEngine;
 
-namespace TowerDefense.Tower.Scripts {
+namespace TowerDefense.Towers.Scripts {
 	public class TowerBuildManager : MonoBehaviour {
 		public static TowerBuildManager Instance;
 		
-		private GameObject _towerPrefab;
+		private PlayerTower _towerPrefab;
 
 		[SerializeField] 
 		private Vector3 _positionOffset;
+
+		private float _towerToInstantiateRange;
 		
 		[HideInInspector]
 		public bool IsAllowedToBuild = false;
@@ -31,14 +34,19 @@ namespace TowerDefense.Tower.Scripts {
 		
 		#region Public
 
-		public void SetTowerPrefab(GameObject towerPrefab) {
+		public void SetTowerPrefab(PlayerTower towerPrefab) {
 			this._towerPrefab = towerPrefab;
+			this._towerToInstantiateRange = towerPrefab.GetRange();
 		}
 
-		public GameObject BuildTower(Transform targetNodeToInstantiate) {
-			GameObject tower = Instantiate(this._towerPrefab, targetNodeToInstantiate.position + this._positionOffset, targetNodeToInstantiate.rotation);
+		public PlayerTower BuildTower(Transform targetNodeToInstantiate) {
+			PlayerTower tower = Instantiate(this._towerPrefab, targetNodeToInstantiate.position + this._positionOffset, targetNodeToInstantiate.rotation);
 			this.IsAllowedToBuild = false;
 			return tower;
+		}
+
+		public float GetTowerToInstantiateRange() {
+			return this._towerToInstantiateRange * 1.8f;
 		}
 		
 		#endregion

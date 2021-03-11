@@ -41,7 +41,6 @@ GameObject:
   - component: {fileID: 3203508621746676952}
   - component: {fileID: 3203508621747460808}
   - component: {fileID: 3203508621748967398}
-  - component: {fileID: 133243867841347295}
   m_Layer: 0
   m_Name: rotater
   m_TagString: Untagged
@@ -113,25 +112,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &133243867841347295
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3203508621746464380}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b84892ce43482247849475ebabc704c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _range: 6
-  turnSpeed: 15
-  _rateOfFire: 2
-  _bulletPrefab: {fileID: 8753822808306184597, guid: ecd435c5c22894241be7d8463a8040fb, type: 3}
-  _bulletSpawnPoint: {fileID: 1717807349092544780}
-  _bulletPoolSize: 5
-  _bulletDamage: 25
 --- !u!1 &3203508621746479190
 GameObject:
   m_ObjectHideFlags: 0
@@ -304,6 +284,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3203508621746747718}
+  - component: {fileID: 5197401233323990776}
   m_Layer: 0
   m_Name: FastFireCannon
   m_TagString: Untagged
@@ -327,3 +308,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5197401233323990776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3203508621746516708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b84892ce43482247849475ebabc704c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _range: 7
+  turnSpeed: 15
+  _rateOfFire: 2
+  _bulletPrefab: {fileID: 8753822808306184597, guid: ecd435c5c22894241be7d8463a8040fb, type: 3}
+  _bulletSpawnPoint: {fileID: 1717807349092544780}
+  _bulletPoolSize: 5
+  _bulletDamage: 25
