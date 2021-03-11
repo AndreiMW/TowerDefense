@@ -19,11 +19,17 @@ namespace TowerDefense.Map.Scripts {
 		
 		private Renderer _renderer;
 
+		private TowerBuildManager _towerBuildManager;
+
 		#region Lifecycle
 		
 		private void Awake() {
 			this._renderer = this.GetComponent<Renderer>();
 			this._originalColor = this._renderer.material.color;
+		}
+
+		private void Start() {
+			this._towerBuildManager = TowerBuildManager.Instance;
 		}
 		
 		#endregion
@@ -31,7 +37,7 @@ namespace TowerDefense.Map.Scripts {
 		#region MouseHandling
 
 		private void OnMouseDown() {
-			if (this._turret) {
+			if (this._turret || !this._towerBuildManager.IsAllowedToBuild) {
 				Debug.Log("Can't build here, sry");
 				return;
 			}
@@ -41,14 +47,14 @@ namespace TowerDefense.Map.Scripts {
 		}
 
 		private void OnMouseEnter() {
-			if (this._turret) {
+			if (this._turret || !this._towerBuildManager.IsAllowedToBuild) {
 				return;
 			}
 			this._renderer.material.color = this._hoveringColor;
 		}
 
 		private void OnMouseExit() {
-			if (this._turret) {
+			if (this._turret || !this._towerBuildManager.IsAllowedToBuild) {
 				return;
 			}
 			this._renderer.material.color = this._originalColor;
