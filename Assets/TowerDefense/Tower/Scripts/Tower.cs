@@ -28,7 +28,10 @@ namespace TowerDefense.Tower.Scripts {
 
 		[SerializeField] 
 		private int _bulletPoolSize;
-		
+
+		[SerializeField] 
+		private int _bulletDamage;
+
 		private Bullet[] _bulletsPool;
 
 		private float _fireCooldown = 0f;
@@ -53,6 +56,7 @@ namespace TowerDefense.Tower.Scripts {
 
 				Bullet bullet = this._bulletsPool[i];
 				
+				bullet.SetBulletDamage(this._bulletDamage);
 				bullet.gameObject.SetActive(false);
 				bullet.SetBulletIndex(i);
 				bullet.OnBulletReachedEnemy += ()=> this._availableBulletsIndex.Add(bullet.GetBulletIndex());

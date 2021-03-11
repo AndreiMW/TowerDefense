@@ -20,6 +20,8 @@ namespace TowerDefense.Tower.Scripts {
 		private int _bulletIndex;
 		public event Action OnBulletReachedEnemy;
 
+		private int _bulletDamage;
+
 		#region Lifecycle
 
 		private void Update() {
@@ -59,6 +61,14 @@ namespace TowerDefense.Tower.Scripts {
 
 		public int GetBulletIndex() {
 			return this._bulletIndex;
+		}
+
+		public void SetBulletDamage(int bulletDamage) {
+			this._bulletDamage = bulletDamage;
+		}
+
+		public int GetBulletDamage() {
+			return this._bulletDamage;
 		}
 		
 		#endregion
