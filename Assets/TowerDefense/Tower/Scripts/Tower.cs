@@ -83,6 +83,14 @@ namespace TowerDefense.Tower.Scripts {
 		
 		#endregion
 		
+		#region Public
+
+		public float GetRange() {
+			return this._range;
+		}
+		
+		#endregion
+		
 		#region Private
 
 		private void UpdateTarget() {
