@@ -37,7 +37,7 @@ namespace TowerDefense.Inventory.Scripts {
 		private TowerBuildManager _towerBuildInstance;
 
 		private float _turretCost;
-		private float _moneyAmount = 100;
+		private float _moneyAmount = 120;
 
 		public static Inventory Instance;
 		
@@ -56,6 +56,7 @@ namespace TowerDefense.Inventory.Scripts {
 
 		private void Start() {
 			this._towerBuildInstance = TowerBuildManager.Instance;
+			this.SetMoneyAmountText();
 		}
 
 		#endregion
