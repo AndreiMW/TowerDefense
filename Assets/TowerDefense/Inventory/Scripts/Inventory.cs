@@ -8,21 +8,39 @@
 using System;
 using TowerDefense.Tower.Scripts;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 namespace TowerDefense.Inventory.Scripts {
 	public class Inventory : MonoBehaviour {
 		[SerializeField] 
-		private GameObject _basicCannonPrefab;
+		private GameObject _basicTowerPrefab;
 		
 		[SerializeField] 
-		private GameObject _fastFireRateCannonPrefab;
+		private GameObject _fastFireRateTowerPrefab;
 		
 		[SerializeField] 
-		private GameObject _powerCannonPrefab;
+		private GameObject _powerTowerPrefab;
+
+		[SerializeField]
+		private Button _basicTowerButton;
+		[SerializeField]
+		private Button _fastFireRateTowerButton;
+		[SerializeField]
+		private Button _powerTowerbutton;
 
 		private TowerBuildManager _towerBuildInstance;
+
+		private float _turretCost;
+		private float _moneyAmount = 100;
 		
 		#region Lifecycle
+
+		private void Awake() {
+			this._basicTowerButton.onClick.AddListener(this.GetBasicCannon);
+			this._fastFireRateTowerButton.onClick.AddListener(this.GetFastFireRateCannon);
+			this._powerTowerbutton.onClick.AddListener(this.GetPowerCannon);
+		}
 
 		private void Start() {
 			this._towerBuildInstance = TowerBuildManager.Instance;
@@ -32,18 +50,37 @@ namespace TowerDefense.Inventory.Scripts {
 		
 		#region Public
 
-		public void GetBasicCannon() {
-			this._towerBuildInstance.SetTowerPrefab(this._basicCannonPrefab);
+		private void GetBasicCannon() {
+			this._turretCost = 50f;
+			if (this._moneyAmount < 50) {
+				Debug.Log("Not enough money!");
+				return;
+			}
+
+			this._moneyAmount -= this._turretCost;
+			this._towerBuildInstance.SetTowerPrefab(this._basicTowerPrefab);
 			this._towerBuildInstance.IsAllowedToBuild = true;
 		}
 		
-		public void GetFastFireRateCannon() {
-			this._towerBuildInstance.SetTowerPrefab(this._fastFireRateCannonPrefab);
+		private void GetFastFireRateCannon() {
+			this._turretCost = 70f;
+			if (this._moneyAmount < this._turretCost) {
+				Debug.Log("Not enough money!");
+				return;
+			}
+			this._moneyAmount -= this._turretCost;
+			this._towerBuildInstance.SetTowerPrefab(this._fastFireRateTowerPrefab);
 			this._towerBuildInstance.IsAllowedToBuild = true;
 		}
 
-		public void GetPowerCannon() {
-			this._towerBuildInstance.SetTowerPrefab(this._powerCannonPrefab);
+		private void GetPowerCannon() {
+			this._turretCost = 120f;
+			if (this._moneyAmount < this._turretCost) {
+				Debug.Log("Not enough money!");
+				return;
+			}
+			this._moneyAmount -= this._turretCost;
+			this._towerBuildInstance.SetTowerPrefab(this._powerTowerPrefab);
 			this._towerBuildInstance.IsAllowedToBuild = true;
 		}
 		
