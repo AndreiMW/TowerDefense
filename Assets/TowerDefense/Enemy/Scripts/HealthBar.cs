@@ -2,7 +2,7 @@
  * Created Date: 3/11/2021
  * Author: Andrei Ciobanu
  * 
- * Copyright (c) 2021 ATiStudios. All rights reserved. 
+ * Copyright (c) 2021 Andrei-Florin Ciobanu. All rights reserved. 
  */
 
 using UnityEngine;
