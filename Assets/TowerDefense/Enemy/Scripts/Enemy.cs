@@ -70,6 +70,22 @@ namespace TowerDefense.Enemy.Scripts {
 			this._shouldStartMoving = true;
 		}
 
+		public float GetHealth() {
+			return this._health;
+		}
+		
+		public void SetHealth(float health) {
+			this._health = health;
+		}
+
+		public float GetSpeed() {
+			return this._speed;
+		}
+
+		public void SetSpeed(float speed) {
+			this._speed = speed;
+		}
+
 		#endregion
 		
 		#region Private
@@ -90,7 +106,6 @@ namespace TowerDefense.Enemy.Scripts {
 		private void TakeDamage(int damage) {
 			this._health -= damage;
 			this._enemyHealthBar.SetHealth(this._health);
-			Debug.Log($"Health: {this._health}");
 
 			if (this._health <= 0) {
 				this.Kill();
