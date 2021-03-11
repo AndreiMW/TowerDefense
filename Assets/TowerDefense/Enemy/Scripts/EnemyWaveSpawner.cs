@@ -25,7 +25,7 @@ namespace TowerDefense.Enemy.Scripts {
 
 		private bool _isWaveComplete = true;
 
-		private float _countdown = 5;
+		private float _countdown = 8;
 		private int _waveNumber = 0;
 		private int _numberOfEnemiesKilled = 0;
 
@@ -75,7 +75,7 @@ namespace TowerDefense.Enemy.Scripts {
 				enemy.gameObject.SetActive(true);
 				enemy.StartEnemyMovement();
 				
-				yield return new WaitForSeconds(0.2f);
+				yield return new WaitForSeconds(0.4f);
 			}
 		}
 
