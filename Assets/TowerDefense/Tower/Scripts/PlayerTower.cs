@@ -5,11 +5,11 @@
  * Copyright (c) 2021 Andrei-Florin Ciobanu. All rights reserved. 
  */
 
-using System;
 using System.Collections.Generic;
+using TowerDefense.Tower.Scripts;
 using UnityEngine;
 
-namespace TowerDefense.Tower.Scripts {
+namespace TowerDefense.Towers.Scripts {
 	public class Tower : MonoBehaviour {
 		[SerializeField] 
 		private float _range;
