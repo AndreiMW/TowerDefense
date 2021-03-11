@@ -288,13 +288,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b84892ce43482247849475ebabc704c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baseToRotate: {fileID: 0}
   _range: 8
   turnSpeed: 15
   _rateOfFire: 1
   _bulletPrefab: {fileID: 8753822808306184597, guid: ecd435c5c22894241be7d8463a8040fb, type: 3}
   _bulletSpawnPoint: {fileID: 4960633043521885887}
   _bulletPoolSize: 5
+  _bulletDamage: 35
 --- !u!1 &9184092846922306903
 GameObject:
   m_ObjectHideFlags: 0

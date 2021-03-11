@@ -133,6 +133,7 @@ MonoBehaviour:
   _bulletPrefab: {fileID: 8753822808306184597, guid: ecd435c5c22894241be7d8463a8040fb, type: 3}
   _bulletSpawnPoint: {fileID: 3376183851580223044}
   _bulletPoolSize: 5
+  _bulletDamage: 50
 --- !u!1 &1547368981134294814
 GameObject:
   m_ObjectHideFlags: 0
