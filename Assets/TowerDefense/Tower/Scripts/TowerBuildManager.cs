@@ -10,12 +10,14 @@ using UnityEngine;
 namespace TowerDefense.Tower.Scripts {
 	public class TowerBuildManager : MonoBehaviour {
 		public static TowerBuildManager Instance;
-
-		[SerializeField]
+		
 		private GameObject _towerPrefab;
 
 		[SerializeField] 
 		private Vector3 _positionOffset;
+		
+		[HideInInspector]
+		public bool IsAllowedToBuild = false;
 		
 		#region Lifecycle
 
@@ -29,8 +31,13 @@ namespace TowerDefense.Tower.Scripts {
 		
 		#region Public
 
+		public void SetTowerPrefab(GameObject towerPrefab) {
+			this._towerPrefab = towerPrefab;
+		}
+
 		public GameObject BuildTower(Transform targetNodeToInstantiate) {
 			GameObject tower = Instantiate(this._towerPrefab, targetNodeToInstantiate.position + this._positionOffset, targetNodeToInstantiate.rotation);
+			this.IsAllowedToBuild = false;
 			return tower;
 		}
 		
