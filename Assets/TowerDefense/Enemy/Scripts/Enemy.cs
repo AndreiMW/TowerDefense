@@ -9,12 +9,18 @@ using System;
 using UnityEngine;
 
 using TowerDefense.Map.Scripts;
+using TowerDefense.Tower.Scripts;
 
 namespace TowerDefense.Enemy.Scripts {
 	public class Enemy : MonoBehaviour {
 		
 		[SerializeField] 
 		private float _speed;
+
+		[SerializeField] 
+		private int _health;
+
+		private int _originalHealth;
 		
 		private WaypointManager _waypointManager => WaypointManager.Instance;
 		private int _waypointIndex = 0;
@@ -28,6 +34,7 @@ namespace TowerDefense.Enemy.Scripts {
 
 		private void Awake() {
 			this._originalPosition = this.transform.position;
+			this._originalHealth = this._health;
 		}
 
 		private void Update() {
@@ -47,10 +54,8 @@ namespace TowerDefense.Enemy.Scripts {
 
 		private void OnTriggerEnter(Collider other) {
 			if (other.gameObject.tag.Equals("Bullet")) {
-				this._shouldStartMoving = false;
-				this._waypointIndex = 0;
-				this.transform.position = this._originalPosition;
-				this.OnDeath?.Invoke();
+				Bullet bullet = other.GetComponent<Bullet>();
+				this.TakeDamage(bullet.GetBulletDamage());
 			}
 		}
 
@@ -77,6 +82,23 @@ namespace TowerDefense.Enemy.Scripts {
 			if (distance <= 0.5f) {
 				this._waypointIndex++;
 			}
+		}
+		
+		private void TakeDamage(int damage) {
+			this._health -= damage;
+			Debug.Log($"Health: {this._health}");
+
+			if (this._health <= 0) {
+				this.Kill();
+			}
+		}
+
+		private void Kill() {
+			this._shouldStartMoving = false;
+			this._waypointIndex = 0;
+			this.transform.position = this._originalPosition;
+			this._health = this._originalHealth;
+			this.OnDeath?.Invoke();
 		}
 		
 		#endregion
