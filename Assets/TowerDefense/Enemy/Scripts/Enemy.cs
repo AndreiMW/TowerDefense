@@ -18,9 +18,12 @@ namespace TowerDefense.Enemy.Scripts {
 		private float _speed;
 
 		[SerializeField] 
-		private int _health;
+		private float _health;
 
-		private int _originalHealth;
+		[SerializeField] 
+		private HealthBar _enemyHealthBar;
+
+		private float _originalHealth;
 		
 		private WaypointManager _waypointManager => WaypointManager.Instance;
 		private int _waypointIndex = 0;
@@ -86,6 +89,7 @@ namespace TowerDefense.Enemy.Scripts {
 		
 		private void TakeDamage(int damage) {
 			this._health -= damage;
+			this._enemyHealthBar.SetHealth(this._health);
 			Debug.Log($"Health: {this._health}");
 
 			if (this._health <= 0) {
@@ -98,6 +102,7 @@ namespace TowerDefense.Enemy.Scripts {
 			this._waypointIndex = 0;
 			this.transform.position = this._originalPosition;
 			this._health = this._originalHealth;
+			this._enemyHealthBar.SetHealth(this._originalHealth);
 			this.OnDeath?.Invoke();
 		}
 		
