@@ -39,14 +39,6 @@ namespace TowerDefense.Tower.Scripts {
 			this._originalPosition = this.transform.position;
 		}
 
-		private void OnTriggerEnter(Collider other) {
-			if (other.tag.Equals("Enemy")) {
-				this.transform.position = this._originalPosition;
-				this.OnBulletReachedEnemy?.Invoke();
-				this.gameObject.SetActive(false);
-			}
-		}
-
 		#endregion
 		
 		#region Public
@@ -69,6 +61,12 @@ namespace TowerDefense.Tower.Scripts {
 
 		public int GetBulletDamage() {
 			return this._bulletDamage;
+		}
+
+		public void BulletReachedEnemy() {
+			this.transform.position = this._originalPosition;
+			this.gameObject.SetActive(false);
+			this.OnBulletReachedEnemy?.Invoke();
 		}
 		
 		#endregion
