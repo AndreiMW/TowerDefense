@@ -27,9 +27,15 @@ namespace TowerDefense.Enemy.Scripts {
 
 		private float _countdown = 8;
 		private int _waveNumber = 0;
+		private int _numberOfEnemiesInWave = 3;
+		
 		private int _numberOfEnemiesKilled = 0;
 
 		private Enemy[] _enemiesPool;
+
+		private float _timeBetweenEnemies = 0.7f;
+
+		private float _enemyHealthIncrement = 0f;
 
 		#region Lifecycle
 
@@ -66,23 +72,29 @@ namespace TowerDefense.Enemy.Scripts {
 
 		private void SpawnWave() {
 			this._waveNumber++;
-			StartCoroutine(this.SpawnEnemiesFromPool(this._waveNumber));
+			StartCoroutine(this.SpawnEnemiesFromPool(this._numberOfEnemiesInWave));
 		}
 
 		private IEnumerator SpawnEnemiesFromPool(int enemiesToSpawn) {
 			for (int i = 0; i < enemiesToSpawn; i++) {
 				Enemy enemy = this._enemiesPool[i];
 				enemy.gameObject.SetActive(true);
+				enemy.SetHealth(enemy.GetHealth() + this._enemyHealthIncrement);
 				enemy.StartEnemyMovement();
 				
-				yield return new WaitForSeconds(0.4f);
+				yield return new WaitForSeconds(this._timeBetweenEnemies);
 			}
 		}
 
 		private void CheckIfWaveIsComplete() {
-			if (this._waveNumber == this._numberOfEnemiesKilled) {
+			if (this._numberOfEnemiesInWave == this._numberOfEnemiesKilled) {
 				this._isWaveComplete = true;
 				this._numberOfEnemiesKilled = 0;
+
+				if (this._waveNumber % 2 == 0) {
+					this._numberOfEnemiesInWave += 2;
+					this._enemyHealthIncrement += 20;
+				}
 			}
 		}
 
