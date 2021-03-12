@@ -26,12 +26,14 @@ namespace TowerDefense.Enemy.Scripts {
 		private HealthBar _enemyHealthBar;
 
 		private float _originalHealth;
+		private float _originalSpeed;
 		
 		private WaypointManager _waypointManager => WaypointManager.Instance;
 		private int _waypointIndex = 0;
 		private Vector3 _originalPosition;
 
 		private bool _shouldMove = false;
+		private bool _isBoss = false;
 
 		public event Action OnDeath;
 		
@@ -40,6 +42,7 @@ namespace TowerDefense.Enemy.Scripts {
 		private void Awake() {
 			this._originalPosition = this.transform.position;
 			this._originalHealth = this._health;
+			this._originalSpeed = this._speed;
 		}
 
 		private void Start() {
@@ -94,6 +97,13 @@ namespace TowerDefense.Enemy.Scripts {
 			this.Kill();
 		}
 
+		public void MakeBoss() {
+			this._isBoss = true;
+			this._health = 250;
+			this.transform.localScale += Vector3.one;
+			this._speed--;
+		}
+
 		#endregion
 		
 		#region Private
@@ -121,6 +131,11 @@ namespace TowerDefense.Enemy.Scripts {
 		}
 
 		private void Kill() {
+			if (this._isBoss) {
+				this.transform.localScale = Vector3.one;
+				this._isBoss = false;
+				this._speed = _originalSpeed;
+			}
 			this._shouldMove = false;
 			this._waypointIndex = 0;
 			this.transform.position = this._originalPosition;
