@@ -135,6 +135,12 @@ namespace TowerDefense.Enemy.Scripts {
 		}
 
 		private void Kill() {
+			this.gameObject.SetActive(false);
+			this.ResetProperties();
+			this.OnDeath?.Invoke();
+		}
+
+		public void ResetProperties() {
 			if (this._isBoss) {
 				this.transform.localScale = Vector3.one;
 				this._isBoss = false;
@@ -145,7 +151,6 @@ namespace TowerDefense.Enemy.Scripts {
 			this.transform.position = this._originalPosition;
 			this._health = this._originalHealth;
 			this._enemyHealthBar.SetMaxHealthAndUpdateHealthBar(this._originalHealth);
-			this.OnDeath?.Invoke();
 		}
 		
 		#endregion
