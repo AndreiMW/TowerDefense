@@ -74,7 +74,7 @@ namespace TowerDefense.Tower.Scripts {
 			if (this._isGameOver) {
 				return;
 			}
-			InvokeRepeating(nameof(this.UpdateTarget), 0f,0.25f);
+			InvokeRepeating(nameof(this.UpdateTarget), 0f,0.1f);
 		}
 
 		private void Update() {
@@ -109,6 +109,7 @@ namespace TowerDefense.Tower.Scripts {
 		#region Private
 
 		private void UpdateTarget() {
+			//singleton active enemies wave 
 			GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
 			float shortestEnemyDistance = Mathf.Infinity;
 			GameObject nearestEnemy = null;
