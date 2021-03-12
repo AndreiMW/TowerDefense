@@ -25,10 +25,11 @@ namespace TowerDefense.Enemy.Scripts {
 		private float _timeBetweenWaves;
 
 		private bool _isWaveComplete = true;
+		private bool _shouldSpawnBossNextWave = false;
 
-		private float _countdown = 8;
+		private float _countdown = 3;
 		private int _waveNumber = 0;
-		private int _numberOfEnemiesInWave = 20;
+		private int _numberOfEnemiesInWave = 3;
 		
 		private int _numberOfEnemiesKilled = 0;
 
@@ -37,7 +38,7 @@ namespace TowerDefense.Enemy.Scripts {
 		private float _timeBetweenEnemies = 0.7f;
 
 		private float _enemyHealthIncrement = 0f;
-		private float _moneyAmountPerKill = 5f;
+		private float _moneyAmountPerKill = 10f;
 
 		private ScoreManager _scoreManagerInstance;
 		private SceneManager _sceneManagerInstance;
@@ -59,6 +60,7 @@ namespace TowerDefense.Enemy.Scripts {
 					Inventory.Scripts.Inventory.Instance.AddMoney(this._moneyAmountPerKill * (enemy.GetHealth()/100));
 					enemy.gameObject.SetActive(false);
 					this._numberOfEnemiesKilled++;
+					this._activeEnemies.Remove(enemy);
 					this.CheckIfWaveIsComplete();
 				};
 			}
@@ -90,31 +92,36 @@ namespace TowerDefense.Enemy.Scripts {
 
 		private void SpawnWave() {
 			this._waveNumber++;
-			this._activeEnemies.Clear();
 			this._scoreManagerInstance.SetWaveNumberText(this._waveNumber);
 			this._scoreManagerInstance.HideNextWaveCountdownTimer();
 			this._startWaveCoroutine = StartCoroutine(this.SpawnEnemiesFromPool(this._numberOfEnemiesInWave));
 		}
 
 		private IEnumerator SpawnEnemiesFromPool(int enemiesToSpawn) {
-			for (int i = 0; i < enemiesToSpawn; i++) {
-				Enemy enemy = this._enemiesPool[i];
-				enemy.gameObject.SetActive(true);
-				enemy.SetHealth(enemy.GetHealth() + this._enemyHealthIncrement);
-				enemy.StartEnemyMovement();
-				this._activeEnemies.Add(enemy);
+			if (this._shouldSpawnBossNextWave) {
+				this.SpawnBoss();
+			} else {
+				for (int i = 0; i < enemiesToSpawn; i++) {
+					Enemy enemy = this._enemiesPool[i];
+					enemy.gameObject.SetActive(true);
+					enemy.SetHealth(enemy.GetHealth() + this._enemyHealthIncrement);
+					enemy.StartEnemyMovement();
+					this._activeEnemies.Add(enemy);
 				
-				yield return new WaitForSeconds(this._timeBetweenEnemies);
+					yield return new WaitForSeconds(this._timeBetweenEnemies);
+				}	
 			}
 		}
 
 		private void CheckIfWaveIsComplete() {
-			if (this._numberOfEnemiesInWave == this._numberOfEnemiesKilled) {
+			if (this._activeEnemies.Count == 0) {
 				this._isWaveComplete = true;
 				this._numberOfEnemiesKilled = 0;
 				this._scoreManagerInstance.ShowNextWaveCountdownTimer();
-
-				if (this._waveNumber % 2 == 0) {
+				
+				if (this._waveNumber % 3 == 0) {
+					this._shouldSpawnBossNextWave = true;
+				} else {
 					this._numberOfEnemiesInWave += 2;
 					this._enemyHealthIncrement += 20;
 					this._moneyAmountPerKill += 10;
@@ -137,6 +144,15 @@ namespace TowerDefense.Enemy.Scripts {
 		private void HandleGameOver() {
 			StopCoroutine(this._startWaveCoroutine);
 		}
+
+		private void SpawnBoss() {
+			Enemy bossEnemy = this._enemiesPool[0];
+			bossEnemy.gameObject.SetActive(true);
+			bossEnemy.MakeBoss();
+			bossEnemy.StartEnemyMovement();
+			this._shouldSpawnBossNextWave = false;
+		}
+		
 
 		#endregion
 	}
