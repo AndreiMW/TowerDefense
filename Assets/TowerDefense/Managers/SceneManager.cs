@@ -6,6 +6,7 @@
  */
 
 using System;
+
 using UnityEngine;
 
 namespace TowerDefense.Managers {
@@ -13,6 +14,7 @@ namespace TowerDefense.Managers {
 		public static SceneManager Instance;
 
 		public event Action OnGameOver;
+		public event Action OnGameRetry;
 		
 		#region Lifecycle
 
@@ -27,8 +29,11 @@ namespace TowerDefense.Managers {
 		#region Public
 
 		public void ExecuteGameOver() {
-			Debug.Log("GAME OVER!");
 			this.OnGameOver?.Invoke();
+		}
+
+		public void ExecuteGameRetry() {
+			this.OnGameRetry?.Invoke();
 		}
 		
 		#endregion
