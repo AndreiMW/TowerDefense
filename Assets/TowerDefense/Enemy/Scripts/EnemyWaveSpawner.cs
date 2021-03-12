@@ -144,6 +144,7 @@ namespace TowerDefense.Enemy.Scripts {
 
 		private void HandleOnGameRetry() {
 			this._waveNumber = 0;
+			this._numberOfEnemiesInWave = 3;
 			this._scoreManagerInstance.SetWaveNumberText(this._waveNumber);
 			this._isWaveComplete = true;
 			this._scoreManagerInstance.ShowNextWaveCountdownTimer();
@@ -164,7 +165,6 @@ namespace TowerDefense.Enemy.Scripts {
 			bossEnemy.StartEnemyMovement();
 			this._shouldSpawnBossNextWave = false;
 		}
-		
 
 		#endregion
 	}
