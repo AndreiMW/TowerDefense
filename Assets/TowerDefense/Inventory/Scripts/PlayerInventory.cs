@@ -15,7 +15,7 @@ using TowerDefense.Towers.Scripts;
 
 
 namespace TowerDefense.Inventory.Scripts {
-	public class Inventory : MonoBehaviour {
+	public class PlayerInventory : MonoBehaviour {
 		[SerializeField] 
 		private PlayerTower _basicTowerPrefab;
 		
@@ -41,8 +41,8 @@ namespace TowerDefense.Inventory.Scripts {
 		private float _moneyAmount = 120;
 		private float _originalMoneyAmount;
 
-		public static Inventory Instance;
-		
+		public static PlayerInventory Instance;
+
 		#region Lifecycle
 
 		private void Awake() {
@@ -87,7 +87,7 @@ namespace TowerDefense.Inventory.Scripts {
 				Debug.Log("Not enough money!");
 				return;
 			}
-
+			
 			this._moneyAmount -= this._turretCost;
 			this.SetMoneyAmountText();
 			this._towerBuildInstance.SetTowerPrefab(this._basicTowerPrefab);

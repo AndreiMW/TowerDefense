@@ -10,6 +10,8 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
+using TowerDefense.Inventory.Scripts;
+
 using TowerDefense.Managers;
 
 namespace TowerDefense.Enemy.Scripts {
@@ -57,7 +59,7 @@ namespace TowerDefense.Enemy.Scripts {
 				Enemy enemy = this._enemiesPool[i];
 				enemy.gameObject.SetActive(false);
 				enemy.OnDeath += ()=> {
-					Inventory.Scripts.Inventory.Instance.AddMoney(this._moneyAmountPerKill * (enemy.GetHealth()/100));
+					PlayerInventory.Instance.AddMoney(this._moneyAmountPerKill * (enemy.GetHealth()/100));
 					enemy.gameObject.SetActive(false);
 					this._numberOfEnemiesKilled++;
 					this._activeEnemies.Remove(enemy);
@@ -140,7 +142,7 @@ namespace TowerDefense.Enemy.Scripts {
 			this._scoreManagerInstance.SetWaveNumberText(this._waveNumber);
 			this._isWaveComplete = true;
 			this._scoreManagerInstance.ShowNextWaveCountdownTimer();
-			Inventory.Scripts.Inventory.Instance.ResetMoneyAmount();
+			PlayerInventory.Instance.ResetMoneyAmount();
 			
 			for (int i = 0; i < this._activeEnemies.Count; i++) {
 				this._activeEnemies[i].KillEnemy();
