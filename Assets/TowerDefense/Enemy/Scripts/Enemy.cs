@@ -43,6 +43,8 @@ namespace TowerDefense.Enemy.Scripts {
 			this._originalPosition = this.transform.position;
 			this._originalHealth = this._health;
 			this._originalSpeed = this._speed;
+			
+			this._enemyHealthBar.SetMaxHealthAndUpdateHealthBar(this._health);
 		}
 
 		private void Start() {
@@ -83,6 +85,7 @@ namespace TowerDefense.Enemy.Scripts {
 		
 		public void SetHealth(float health) {
 			this._health = health;
+			this._enemyHealthBar.SetMaxHealthAndUpdateHealthBar(health);
 		}
 
 		public float GetSpeed() {
@@ -99,9 +102,10 @@ namespace TowerDefense.Enemy.Scripts {
 
 		public void MakeBoss() {
 			this._isBoss = true;
-			this._health = 250;
+			this._health = 1000;
 			this.transform.localScale += Vector3.one;
 			this._speed--;
+			this._enemyHealthBar.SetMaxHealthAndUpdateHealthBar(this._health);
 		}
 
 		#endregion
@@ -123,7 +127,7 @@ namespace TowerDefense.Enemy.Scripts {
 		
 		private void TakeDamage(int damage) {
 			this._health -= damage;
-			this._enemyHealthBar.SetHealth(this._health);
+			this._enemyHealthBar.UpdateHealth(this._health);
 
 			if (this._health <= 0) {
 				this.Kill();
@@ -140,7 +144,7 @@ namespace TowerDefense.Enemy.Scripts {
 			this._waypointIndex = 0;
 			this.transform.position = this._originalPosition;
 			this._health = this._originalHealth;
-			this._enemyHealthBar.SetHealth(this._originalHealth);
+			this._enemyHealthBar.SetMaxHealthAndUpdateHealthBar(this._originalHealth);
 			this.OnDeath?.Invoke();
 		}
 		

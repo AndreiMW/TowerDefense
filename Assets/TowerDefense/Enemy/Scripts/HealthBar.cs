@@ -21,11 +21,18 @@ namespace TowerDefense.Enemy.Scripts {
 		
 		[SerializeField] 
 		private Color _lowHpColor = Color.red;
+
+		private float _maxHealth;
 		
 		#region Public
 
-		public void SetHealth(float health) {
-			this._healthProgressImage.fillAmount = health / 100;
+		public void SetMaxHealthAndUpdateHealthBar(float maxHealth) {
+			this._maxHealth = maxHealth;
+			this.UpdateHealth(maxHealth);
+		}
+
+		public void UpdateHealth(float health) {
+			this._healthProgressImage.fillAmount = this.CalculateHealthPercentage(health);
 			this.ChangeHealthBarColor(health);
 		}
 		
@@ -34,15 +41,20 @@ namespace TowerDefense.Enemy.Scripts {
 		#region Private
 
 		private void ChangeHealthBarColor(float health) {
-			if (health <= 25) {
+			float currentHealthValue = this.CalculateHealthPercentage(health);
+			if (currentHealthValue <= 0.25) {
 				this._healthProgressImage.color = this._lowHpColor;
 			} else {
-				if (health > 25 && health <= 75) {
+				if (currentHealthValue > 0.25 && currentHealthValue <= 0.75) {
 					this._healthProgressImage.color = this._halfHpColor;	
 				} else {
 					this._healthProgressImage.color = this._fullHpColor;
 				}
 			}
+		}
+
+		private float CalculateHealthPercentage(float health) {
+			return health / this._maxHealth;
 		}
 		
 		#endregion
