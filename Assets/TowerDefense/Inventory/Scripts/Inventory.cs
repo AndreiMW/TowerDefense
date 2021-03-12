@@ -38,6 +38,7 @@ namespace TowerDefense.Inventory.Scripts {
 
 		private float _turretCost;
 		private float _moneyAmount = 120;
+		private float _originalMoneyAmount;
 
 		public static Inventory Instance;
 		
@@ -52,6 +53,8 @@ namespace TowerDefense.Inventory.Scripts {
 			this._basicTowerButton.onClick.AddListener(this.GetBasicCannon);
 			this._fastFireRateTowerButton.onClick.AddListener(this.GetFastFireRateCannon);
 			this._powerTowerbutton.onClick.AddListener(this.GetPowerCannon);
+
+			this._originalMoneyAmount = this._moneyAmount;
 		}
 
 		private void Start() {
@@ -65,6 +68,11 @@ namespace TowerDefense.Inventory.Scripts {
 
 		public void AddMoney(float moneyAmount) {
 			this._moneyAmount += moneyAmount;
+			this.SetMoneyAmountText();
+		}
+
+		public void ResetMoneyAmount() {
+			this._moneyAmount = this._originalMoneyAmount;
 			this.SetMoneyAmountText();
 		}
 		
