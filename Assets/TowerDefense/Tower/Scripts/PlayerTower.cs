@@ -6,7 +6,10 @@
  */
 
 using System.Collections.Generic;
+
 using UnityEngine;
+
+using TowerDefense.Managers;
 
 namespace TowerDefense.Tower.Scripts {
 	public class PlayerTower : MonoBehaviour {
@@ -39,6 +42,8 @@ namespace TowerDefense.Tower.Scripts {
 
 		private List<int> _availableBulletsIndex;
 
+		private bool _isGameOver = false;
+
 		#region Lifecycle
 
 		private void Awake() {
@@ -60,14 +65,20 @@ namespace TowerDefense.Tower.Scripts {
 				bullet.SetBulletIndex(i);
 				bullet.OnBulletReachedEnemy += ()=> this._availableBulletsIndex.Add(bullet.GetBulletIndex());
 			}
+
+			SceneManager.Instance.OnGameOver += this.HandleGameOver;
+			SceneManager.Instance.OnGameRetry += this.HandleRetry;
 		}
 
 		private void Start() {
+			if (this._isGameOver) {
+				return;
+			}
 			InvokeRepeating(nameof(this.UpdateTarget), 0f,0.25f);
 		}
 
 		private void Update() {
-			if (!this._currentLockedTarget) {
+			if (!this._currentLockedTarget || this._isGameOver) {
 				return;
 			}
 			this.LockTarget();
@@ -79,7 +90,12 @@ namespace TowerDefense.Tower.Scripts {
 
 			this._fireCooldown -= Time.deltaTime;
 		}
-		
+
+		private void OnDestroy() {
+			SceneManager.Instance.OnGameOver -= this.HandleGameOver;
+			SceneManager.Instance.OnGameRetry -= this.HandleRetry;
+		}
+
 		#endregion
 		
 		#region Public
@@ -128,6 +144,14 @@ namespace TowerDefense.Tower.Scripts {
 		private void OnDrawGizmosSelected() {
 			Gizmos.color = Color.red;
 			Gizmos.DrawWireSphere(this.transform.position, this._range);
+		}
+
+		private void HandleGameOver() {
+			this._isGameOver = true;
+		}
+
+		private void HandleRetry() {
+			Destroy(this.gameObject);
 		}
 		
 		#endregion

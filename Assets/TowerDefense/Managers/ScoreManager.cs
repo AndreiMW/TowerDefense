@@ -8,6 +8,7 @@
 using UnityEngine;
 
 using TMPro;
+using UnityEngine.UI;
 
 namespace TowerDefense.Managers {
 	public class ScoreManager : MonoBehaviour {
@@ -21,6 +22,12 @@ namespace TowerDefense.Managers {
 
 		[SerializeField]
 		private CanvasGroup _nextWaveTimerParent;
+
+		[SerializeField] 
+		private CanvasGroup _gameOverView;
+
+		[SerializeField]
+		private Button _retryButton;
 		
 		
 		#region Lifecycle
@@ -29,6 +36,11 @@ namespace TowerDefense.Managers {
 			if (!Instance) {
 				Instance = this;
 			}
+
+			this._gameOverView.alpha = 0f;
+			this._retryButton.onClick.AddListener(this.HandleRetryButton);
+
+			SceneManager.Instance.OnGameOver += this.HandleOnGameOverEvent;
 		}
 
 		#endregion
@@ -49,6 +61,19 @@ namespace TowerDefense.Managers {
 
 		public void SetWaveNumberText(int waveNumber) {
 			this._waveNumberText.text = $"Wave: {waveNumber}";
+		}
+		
+		#endregion
+		
+		#region Private
+
+		private void HandleOnGameOverEvent() {
+			this._gameOverView.alpha = 1f;
+		}
+
+		private void HandleRetryButton() {
+			this._gameOverView.alpha = 0f;
+			SceneManager.Instance.ExecuteGameRetry();
 		}
 		
 		#endregion

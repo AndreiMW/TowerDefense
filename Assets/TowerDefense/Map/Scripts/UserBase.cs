@@ -16,6 +16,19 @@ namespace TowerDefense.Map.Scripts {
 		private HealthBar _baseHealthBar;
 
 		private float _health = 100f;
+		private float _originalHealth;
+		
+		#region Lifecycle
+		
+		private void Start() {
+			this._originalHealth = this._health;
+			SceneManager.Instance.OnGameRetry += ()=> {
+				this._health = this._originalHealth;
+				this._baseHealthBar.SetHealth(this._health);
+			};
+		}
+		
+		#endregion
 
 		#region Collision
 

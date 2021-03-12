@@ -6,6 +6,7 @@
  */
 
 using System.Collections;
+using System.Collections.Generic;
 
 using UnityEngine;
 
@@ -27,7 +28,7 @@ namespace TowerDefense.Enemy.Scripts {
 
 		private float _countdown = 8;
 		private int _waveNumber = 0;
-		private int _numberOfEnemiesInWave = 3;
+		private int _numberOfEnemiesInWave = 20;
 		
 		private int _numberOfEnemiesKilled = 0;
 
@@ -39,10 +40,15 @@ namespace TowerDefense.Enemy.Scripts {
 		private float _moneyAmountPerKill = 5f;
 
 		private ScoreManager _scoreManagerInstance;
+		private SceneManager _sceneManagerInstance;
+
+		private List<Enemy> _activeEnemies;
+		private Coroutine _startWaveCoroutine;
 
 		#region Lifecycle
 
 		private void Awake() {
+			this._activeEnemies = new List<Enemy>();
 			this._enemiesPool = new Enemy[this._enemyPoolSize];
 
 			for (int i = 0; i < this._enemyPoolSize; i++) {
@@ -60,6 +66,10 @@ namespace TowerDefense.Enemy.Scripts {
 
 		private void Start() {
 			this._scoreManagerInstance = ScoreManager.Instance;
+			this._sceneManagerInstance = SceneManager.Instance;
+			
+			this._sceneManagerInstance.OnGameRetry += this.HandleOnGameRetry;
+			this._sceneManagerInstance.OnGameOver += this.HandleGameOver;
 		}
 
 		private void Update() {
@@ -80,9 +90,10 @@ namespace TowerDefense.Enemy.Scripts {
 
 		private void SpawnWave() {
 			this._waveNumber++;
+			this._activeEnemies.Clear();
 			this._scoreManagerInstance.SetWaveNumberText(this._waveNumber);
 			this._scoreManagerInstance.HideNextWaveCountdownTimer();
-			StartCoroutine(this.SpawnEnemiesFromPool(this._numberOfEnemiesInWave));
+			this._startWaveCoroutine = StartCoroutine(this.SpawnEnemiesFromPool(this._numberOfEnemiesInWave));
 		}
 
 		private IEnumerator SpawnEnemiesFromPool(int enemiesToSpawn) {
@@ -91,6 +102,7 @@ namespace TowerDefense.Enemy.Scripts {
 				enemy.gameObject.SetActive(true);
 				enemy.SetHealth(enemy.GetHealth() + this._enemyHealthIncrement);
 				enemy.StartEnemyMovement();
+				this._activeEnemies.Add(enemy);
 				
 				yield return new WaitForSeconds(this._timeBetweenEnemies);
 			}
@@ -108,6 +120,22 @@ namespace TowerDefense.Enemy.Scripts {
 					this._moneyAmountPerKill += 10;
 				}
 			}
+		}
+
+		private void HandleOnGameRetry() {
+			for (int i = 0; i < this._activeEnemies.Count; i++) {
+				this._waveNumber = 0;
+				this._numberOfEnemiesKilled = 0;
+				this._scoreManagerInstance.SetWaveNumberText(this._waveNumber);
+				this._isWaveComplete = true;
+				this._activeEnemies[i].KillEnemy();
+				this._scoreManagerInstance.ShowNextWaveCountdownTimer();
+				Inventory.Scripts.Inventory.Instance.ResetMoneyAmount();
+			}
+		}
+
+		private void HandleGameOver() {
+			StopCoroutine(this._startWaveCoroutine);
 		}
 
 		#endregion
