@@ -6,8 +6,10 @@
  */
 
 using System;
+
 using UnityEngine;
 
+using TowerDefense.Managers;
 using TowerDefense.Map.Scripts;
 using TowerDefense.Tower.Scripts;
 
@@ -29,7 +31,7 @@ namespace TowerDefense.Enemy.Scripts {
 		private int _waypointIndex = 0;
 		private Vector3 _originalPosition;
 
-		private bool _shouldStartMoving = false;
+		private bool _shouldMove = false;
 
 		public event Action OnDeath;
 		
@@ -40,8 +42,12 @@ namespace TowerDefense.Enemy.Scripts {
 			this._originalHealth = this._health;
 		}
 
+		private void Start() {
+			SceneManager.Instance.OnGameOver += () => this._shouldMove = false;
+		}
+
 		private void Update() {
-			if (!this._shouldStartMoving) {
+			if (!this._shouldMove) {
 				return;
 			}
 			
@@ -65,7 +71,7 @@ namespace TowerDefense.Enemy.Scripts {
 		#region Public
 
 		public void StartEnemyMovement() {
-			this._shouldStartMoving = true;
+			this._shouldMove = true;
 		}
 
 		public float GetHealth() {
@@ -115,7 +121,7 @@ namespace TowerDefense.Enemy.Scripts {
 		}
 
 		private void Kill() {
-			this._shouldStartMoving = false;
+			this._shouldMove = false;
 			this._waypointIndex = 0;
 			this.transform.position = this._originalPosition;
 			this._health = this._originalHealth;
