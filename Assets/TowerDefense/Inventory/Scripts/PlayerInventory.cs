@@ -5,12 +5,13 @@
  * Copyright (c) 2021 Andrei-Florin Ciobanu. All rights reserved. 
  */
 
-using System;
-using TMPro;
-using TowerDefense.Tower.Scripts;
-using TowerDefense.Towers.Scripts;
 using UnityEngine;
 using UnityEngine.UI;
+
+using TMPro;
+
+using TowerDefense.Tower.Scripts;
+using TowerDefense.Towers.Scripts;
 
 
 namespace TowerDefense.Inventory.Scripts {
@@ -82,7 +83,7 @@ namespace TowerDefense.Inventory.Scripts {
 
 		private void GetBasicCannon() {
 			this._turretCost = 50f;
-			if (this._moneyAmount < 50) {
+			if (this._moneyAmount < this._turretCost) {
 				Debug.Log("Not enough money!");
 				return;
 			}
