@@ -12,9 +12,6 @@ using UnityEngine;
 
 namespace TowerDefense.Map.Scripts {
 	public class MapTileNode : MonoBehaviour {
-//		[SerializeField]
-//		private Color _hoveringColor;
-
 		[SerializeField] 
 		private CanvasGroup _rangeImage;
 		
@@ -60,9 +57,8 @@ namespace TowerDefense.Map.Scripts {
 			}
 
 			this._rangeImage.alpha = 0.2f;
-			this._rangeImage.GetComponent<RectTransform>().sizeDelta = new Vector2(TowerBuildManager.Instance.GetTowerToInstantiateRange(), TowerBuildManager.Instance.GetTowerToInstantiateRange());
-
-//			this._renderer.material.color = this._hoveringColor;
+			float towerRange = TowerBuildManager.Instance.GetTowerToInstantiateRange();
+			this._rangeImage.GetComponent<RectTransform>().sizeDelta = new Vector2(towerRange,towerRange);
 		}
 
 		private void OnMouseExit() {
@@ -70,7 +66,6 @@ namespace TowerDefense.Map.Scripts {
 				return;
 			}
 			this._rangeImage.alpha = 0f;
-//			this._renderer.material.color = this._originalColor;
 		}
 		
 		#endregion
