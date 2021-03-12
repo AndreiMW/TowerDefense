@@ -22,6 +22,8 @@ namespace TowerDefense.Map.Scripts {
 		
 		private void Start() {
 			this._originalHealth = this._health;
+			this._baseHealthBar.SetMaxHealthAndUpdateHealthBar(this._health);
+			
 			SceneManager.Instance.OnGameRetry += ()=> {
 				this._health = this._originalHealth;
 				this._baseHealthBar.SetMaxHealthAndUpdateHealthBar(this._health);
@@ -36,7 +38,7 @@ namespace TowerDefense.Map.Scripts {
 			if (other.tag.Equals("Enemy")) {
 				Enemy.Scripts.Enemy enemy = other.GetComponent<Enemy.Scripts.Enemy>();
 				enemy.KillEnemy();
-				this._baseHealthBar.UpdateHealth(this._health -= enemy.GetHealth()/2);
+				this._baseHealthBar.UpdateHealth(this._health -= enemy.GetHealth()/4);
 
 				if (this._health <= 0) {
 					SceneManager.Instance.ExecuteGameOver(false);
