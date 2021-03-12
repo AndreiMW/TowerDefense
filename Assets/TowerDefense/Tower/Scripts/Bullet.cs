@@ -25,11 +25,9 @@ namespace TowerDefense.Tower.Scripts {
 		#region Lifecycle
 
 		private void Update() {
-//			if (!this._target) {
-//				Destroy(this.gameObject);
-//				return;
-//			}
-
+			if (!this._target) {
+				return;
+			}
 			Vector3 bulletDirection = this._target.position - this.transform.position;
 			float distanceThisFrame = this._speed * Time.deltaTime;
 			this.transform.Translate(bulletDirection.normalized * distanceThisFrame, Space.World);
@@ -64,6 +62,7 @@ namespace TowerDefense.Tower.Scripts {
 		}
 
 		public void BulletReachedEnemy() {
+			this._target = null;
 			this.transform.position = this._originalPosition;
 			this.gameObject.SetActive(false);
 			this.OnBulletReachedEnemy?.Invoke();
