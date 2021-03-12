@@ -114,7 +114,7 @@ namespace TowerDefense.Enemy.Scripts {
 
 		private void CheckIfWaveIsComplete() {
 			if (this._activeEnemies.Count == 0) {
-				if (this._waveNumber == 1) {
+				if (this._waveNumber == 9) {
 					this.HandleGameOver(true);
 					return;
 				}
@@ -155,7 +155,7 @@ namespace TowerDefense.Enemy.Scripts {
 		private void SpawnBoss() {
 			Enemy bossEnemy = this._enemiesPool[0];
 			bossEnemy.gameObject.SetActive(true);
-			bossEnemy.MakeBoss();
+			bossEnemy.MakeBoss(2500);
 			bossEnemy.StartEnemyMovement();
 			this._shouldSpawnBossNextWave = false;
 		}

@@ -100,9 +100,9 @@ namespace TowerDefense.Enemy.Scripts {
 			this.Kill();
 		}
 
-		public void MakeBoss() {
+		public void MakeBoss(float bossHealth) {
 			this._isBoss = true;
-			this._health = 1000;
+			this._health = bossHealth;
 			this.transform.localScale += Vector3.one;
 			this._speed--;
 			this._enemyHealthBar.SetMaxHealthAndUpdateHealthBar(this._health);
@@ -138,7 +138,7 @@ namespace TowerDefense.Enemy.Scripts {
 			if (this._isBoss) {
 				this.transform.localScale = Vector3.one;
 				this._isBoss = false;
-				this._speed = _originalSpeed;
+				this._speed = this._originalSpeed;
 			}
 			this._shouldMove = false;
 			this._waypointIndex = 0;
