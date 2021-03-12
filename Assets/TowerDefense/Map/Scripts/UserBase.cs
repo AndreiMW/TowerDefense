@@ -39,7 +39,7 @@ namespace TowerDefense.Map.Scripts {
 				this._baseHealthBar.UpdateHealth(this._health -= enemy.GetHealth()/2);
 
 				if (this._health <= 0) {
-					SceneManager.Instance.ExecuteGameOver();
+					SceneManager.Instance.ExecuteGameOver(false);
 				}
 			}
 		}

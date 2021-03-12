@@ -4051,7 +4051,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 24dd2965c80d4899a8e9703f3cd9015d, type: 3}
   m_Name: 
@@ -5702,7 +5702,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1000, y: 500}
+  m_SizeDelta: {x: 500, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &1272591436
 CanvasGroup:
@@ -5713,8 +5713,8 @@ CanvasGroup:
   m_GameObject: {fileID: 1272591434}
   m_Enabled: 1
   m_Alpha: 1
-  m_Interactable: 0
-  m_BlocksRaycasts: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
 --- !u!1001 &1291061382
 PrefabInstance:
@@ -7026,7 +7026,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyPrefab: {fileID: 622388311991351380, guid: 63924fbaca8bc6f4782f25d1b8961cd2, type: 3}
   _enemyPoolSize: 50
-  _timeBetweenWaves: 5
+  _timeBetweenWaves: 2
 --- !u!1 &1740285876
 GameObject:
   m_ObjectHideFlags: 0
@@ -8385,7 +8385,9 @@ MonoBehaviour:
   _countdownToNextWaveText: {fileID: 161572807}
   _waveNumberText: {fileID: 718462396}
   _nextWaveTimerParent: {fileID: 652246719}
-  _gameOverView: {fileID: 1272591436}
+  _gameResultView: {fileID: 1272591436}
+  _retryButton: {fileID: 782164534}
+  _gameResultViewText: {fileID: 1195426589}
 --- !u!1 &2049371136
 GameObject:
   m_ObjectHideFlags: 0

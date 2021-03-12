@@ -71,7 +71,6 @@ namespace TowerDefense.Enemy.Scripts {
 			this._sceneManagerInstance = SceneManager.Instance;
 			
 			this._sceneManagerInstance.OnGameRetry += this.HandleOnGameRetry;
-			this._sceneManagerInstance.OnGameOver += this.HandleGameOver;
 		}
 
 		private void Update() {
@@ -115,6 +114,11 @@ namespace TowerDefense.Enemy.Scripts {
 
 		private void CheckIfWaveIsComplete() {
 			if (this._activeEnemies.Count == 0) {
+				if (this._waveNumber == 1) {
+					this.HandleGameOver(true);
+					return;
+				}
+				
 				this._isWaveComplete = true;
 				this._numberOfEnemiesKilled = 0;
 				this._scoreManagerInstance.ShowNextWaveCountdownTimer();
@@ -130,19 +134,22 @@ namespace TowerDefense.Enemy.Scripts {
 		}
 
 		private void HandleOnGameRetry() {
+			
+			this._waveNumber = 0;
+			this._numberOfEnemiesKilled = 0;
+			this._scoreManagerInstance.SetWaveNumberText(this._waveNumber);
+			this._isWaveComplete = true;
+			this._scoreManagerInstance.ShowNextWaveCountdownTimer();
+			Inventory.Scripts.Inventory.Instance.ResetMoneyAmount();
+			
 			for (int i = 0; i < this._activeEnemies.Count; i++) {
-				this._waveNumber = 0;
-				this._numberOfEnemiesKilled = 0;
-				this._scoreManagerInstance.SetWaveNumberText(this._waveNumber);
-				this._isWaveComplete = true;
 				this._activeEnemies[i].KillEnemy();
-				this._scoreManagerInstance.ShowNextWaveCountdownTimer();
-				Inventory.Scripts.Inventory.Instance.ResetMoneyAmount();
 			}
 		}
 
-		private void HandleGameOver() {
+		private void HandleGameOver(bool isWon) {
 			StopCoroutine(this._startWaveCoroutine);
+			this._sceneManagerInstance.ExecuteGameOver(isWon);
 		}
 
 		private void SpawnBoss() {

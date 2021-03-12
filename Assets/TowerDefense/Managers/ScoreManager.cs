@@ -24,12 +24,14 @@ namespace TowerDefense.Managers {
 		private CanvasGroup _nextWaveTimerParent;
 
 		[SerializeField] 
-		private CanvasGroup _gameOverView;
+		private CanvasGroup _gameResultView;
 
 		[SerializeField]
 		private Button _retryButton;
-		
-		
+
+		[SerializeField] 
+		private TMP_Text _gameResultViewText;
+
 		#region Lifecycle
 
 		private void Awake() {
@@ -37,7 +39,7 @@ namespace TowerDefense.Managers {
 				Instance = this;
 			}
 
-			this._gameOverView.alpha = 0f;
+			this._gameResultView.alpha = 0f;
 			this._retryButton.onClick.AddListener(this.HandleRetryButton);
 
 			SceneManager.Instance.OnGameOver += this.HandleOnGameOverEvent;
@@ -67,12 +69,15 @@ namespace TowerDefense.Managers {
 		
 		#region Private
 
-		private void HandleOnGameOverEvent() {
-			this._gameOverView.alpha = 1f;
+		private void HandleOnGameOverEvent(bool isWon) {
+			this._gameResultView.alpha = 1f;
+
+			this._gameResultViewText.text = isWon ? "You won!" : "Game over";
+
 		}
 
 		private void HandleRetryButton() {
-			this._gameOverView.alpha = 0f;
+			this._gameResultView.alpha = 0f;
 			SceneManager.Instance.ExecuteGameRetry();
 		}
 		

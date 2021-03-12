@@ -147,7 +147,7 @@ namespace TowerDefense.Tower.Scripts {
 			Gizmos.DrawWireSphere(this.transform.position, this._range);
 		}
 
-		private void HandleGameOver() {
+		private void HandleGameOver(bool isWon) {
 			this._isGameOver = true;
 		}
 

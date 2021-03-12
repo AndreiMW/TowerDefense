@@ -13,7 +13,7 @@ namespace TowerDefense.Managers {
 	public class SceneManager : MonoBehaviour {
 		public static SceneManager Instance;
 
-		public event Action OnGameOver;
+		public event Action<bool> OnGameOver;
 		public event Action OnGameRetry;
 		
 		#region Lifecycle
@@ -28,8 +28,8 @@ namespace TowerDefense.Managers {
 		
 		#region Public
 
-		public void ExecuteGameOver() {
-			this.OnGameOver?.Invoke();
+		public void ExecuteGameOver(bool isWon) {
+			this.OnGameOver?.Invoke(isWon);
 		}
 
 		public void ExecuteGameRetry() {
