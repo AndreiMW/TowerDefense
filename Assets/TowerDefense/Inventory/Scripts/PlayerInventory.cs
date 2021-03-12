@@ -6,7 +6,6 @@
  */
 
 using UnityEngine;
-using UnityEngine.UI;
 
 using TMPro;
 
@@ -26,11 +25,11 @@ namespace TowerDefense.Inventory.Scripts {
 		private PlayerTower _powerTowerPrefab;
 
 		[SerializeField]
-		private Button _basicTowerButton;
+		private InventoryTowerButton _basicTowerButton;
 		[SerializeField]
-		private Button _fastFireRateTowerButton;
+		private InventoryTowerButton _fastFireRateTowerButton;
 		[SerializeField]
-		private Button _powerTowerbutton;
+		private InventoryTowerButton _powerTowerbutton;
 
 		[SerializeField] 
 		private TMP_Text _moneyAmountText;
@@ -50,10 +49,15 @@ namespace TowerDefense.Inventory.Scripts {
 			if (!Instance) {
 				Instance = this;
 			}
+
+			this._basicTowerButton.OnMouseDown.AddListener(eventData => this.GetBasicCannon());
+			this._fastFireRateTowerButton.OnMouseDown.AddListener(eventData => this.GetFastFireRateCannon());
+			this._powerTowerbutton.OnMouseDown.AddListener(eventData => this.GetPowerCannon());
 			
-			this._basicTowerButton.onClick.AddListener(this.GetBasicCannon);
-			this._fastFireRateTowerButton.onClick.AddListener(this.GetFastFireRateCannon);
-			this._powerTowerbutton.onClick.AddListener(this.GetPowerCannon);
+			this._basicTowerButton.OnEnter.AddListener(eventData=> this._basicTowerButton.ShowTooltip(this._moneyAmount));
+			this._fastFireRateTowerButton.OnEnter.AddListener(eventData=> this._fastFireRateTowerButton.ShowTooltip(this._moneyAmount));
+			this._powerTowerbutton.OnEnter.AddListener(eventData=> this._powerTowerbutton.ShowTooltip(this._moneyAmount));
+
 
 			this._originalMoneyAmount = this._moneyAmount;
 		}
@@ -84,7 +88,6 @@ namespace TowerDefense.Inventory.Scripts {
 		private void GetBasicCannon() {
 			this._turretCost = 50f;
 			if (this._moneyAmount < this._turretCost) {
-				Debug.Log("Not enough money!");
 				return;
 			}
 			
@@ -97,7 +100,6 @@ namespace TowerDefense.Inventory.Scripts {
 		private void GetFastFireRateCannon() {
 			this._turretCost = 70f;
 			if (this._moneyAmount < this._turretCost) {
-				Debug.Log("Not enough money!");
 				return;
 			}
 			this._moneyAmount -= this._turretCost;
@@ -109,7 +111,6 @@ namespace TowerDefense.Inventory.Scripts {
 		private void GetPowerCannon() {
 			this._turretCost = 120f;
 			if (this._moneyAmount < this._turretCost) {
-				Debug.Log("Not enough money!");
 				return;
 			}
 			this._moneyAmount -= this._turretCost;
