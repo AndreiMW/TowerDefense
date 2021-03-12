@@ -8,6 +8,7 @@
 using UnityEngine;
 
 using TowerDefense.Enemy.Scripts;
+using TowerDefense.Managers;
 
 namespace TowerDefense.Map.Scripts {
 	public class UserBase : MonoBehaviour {
@@ -25,8 +26,7 @@ namespace TowerDefense.Map.Scripts {
 				this._baseHealthBar.SetHealth(this._health -= enemy.GetHealth()/4);
 
 				if (this._health <= 0) {
-					Debug.Log("GAME OVER");
-					//raise game over event.
+					SceneManager.Instance.ExecuteGameOver();
 				}
 			}
 		}
