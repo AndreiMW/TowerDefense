@@ -66,8 +66,8 @@ namespace TowerDefense.Tower.Scripts {
 				bullet.OnBulletReachedEnemy += ()=> this._availableBulletsIndex.Add(bullet.GetBulletIndex());
 			}
 
-			SceneManager.Instance.OnGameOver += this.HandleGameOver;
-			SceneManager.Instance.OnGameRetry += this.HandleRetry;
+			GameSceneManager.Instance.OnGameOver += this.HandleGameOver;
+			GameSceneManager.Instance.OnGameRetry += this.HandleRetry;
 		}
 
 		private void Start() {
@@ -92,8 +92,8 @@ namespace TowerDefense.Tower.Scripts {
 		}
 
 		private void OnDestroy() {
-			SceneManager.Instance.OnGameOver -= this.HandleGameOver;
-			SceneManager.Instance.OnGameRetry -= this.HandleRetry;
+			GameSceneManager.Instance.OnGameOver -= this.HandleGameOver;
+			GameSceneManager.Instance.OnGameRetry -= this.HandleRetry;
 		}
 
 		#endregion

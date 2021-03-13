@@ -42,7 +42,7 @@ namespace TowerDefense.Managers {
 			this._gameResultView.alpha = 0f;
 			this._retryButton.onClick.AddListener(this.HandleRetryButton);
 
-			SceneManager.Instance.OnGameOver += this.HandleOnGameOverEvent;
+			GameSceneManager.Instance.OnGameOver += this.HandleOnGameOverEvent;
 		}
 
 		#endregion
@@ -78,7 +78,7 @@ namespace TowerDefense.Managers {
 
 		private void HandleRetryButton() {
 			this._gameResultView.alpha = 0f;
-			SceneManager.Instance.ExecuteGameRetry();
+			GameSceneManager.Instance.ExecuteGameRetry();
 		}
 		
 		#endregion

@@ -48,7 +48,7 @@ namespace TowerDefense.Enemy.Scripts {
 		}
 
 		private void Start() {
-			SceneManager.Instance.OnGameOver += isWon => this._shouldMove = false;
+			GameSceneManager.Instance.OnGameOver += isWon => this._shouldMove = false;
 		}
 
 		private void Update() {

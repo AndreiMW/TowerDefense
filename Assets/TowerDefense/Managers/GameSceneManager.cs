@@ -10,8 +10,8 @@ using System;
 using UnityEngine;
 
 namespace TowerDefense.Managers {
-	public class SceneManager : MonoBehaviour {
-		public static SceneManager Instance;
+	public class GameSceneManager : MonoBehaviour {
+		public static GameSceneManager Instance;
 		
 		[SerializeField] 
 		private Animator _blackScreenfadeOutAnimator;

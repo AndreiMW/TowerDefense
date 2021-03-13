@@ -24,7 +24,7 @@ namespace TowerDefense.Map.Scripts {
 			this._originalHealth = this._health;
 			this._baseHealthBar.SetMaxHealthAndUpdateHealthBar(this._health);
 			
-			SceneManager.Instance.OnGameRetry += ()=> {
+			GameSceneManager.Instance.OnGameRetry += ()=> {
 				this._health = this._originalHealth;
 				this._baseHealthBar.SetMaxHealthAndUpdateHealthBar(this._health);
 			};
@@ -40,7 +40,7 @@ namespace TowerDefense.Map.Scripts {
 				this._baseHealthBar.UpdateHealth(this._health -= enemyComponent.GetHealth()/4);
 
 				if (this._health <= 0.0f) {
-					SceneManager.Instance.ExecuteGameOver(false);
+					GameSceneManager.Instance.ExecuteGameOver(false);
 				}
 				enemyComponent.KillEnemy();
 			}

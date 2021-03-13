@@ -42,7 +42,7 @@ namespace TowerDefense.Enemy.Scripts {
 		private EnemyComponent[] _enemiesPool;
 
 		private UIManager _uiManagerInstance;
-		private SceneManager _sceneManagerInstance;
+		private GameSceneManager _gameSceneManagerInstance;
 
 		private List<EnemyComponent> _activeEnemies;
 		private Coroutine _startWaveCoroutine;
@@ -73,10 +73,10 @@ namespace TowerDefense.Enemy.Scripts {
 
 		private void Start() {
 			this._uiManagerInstance = UIManager.Instance;
-			this._sceneManagerInstance = SceneManager.Instance;
+			this._gameSceneManagerInstance = GameSceneManager.Instance;
 			
-			this._sceneManagerInstance.OnGameRetry += this.HandleOnGameRetry;
-			this._sceneManagerInstance.OnGameOver += this.HandleGameOver;
+			this._gameSceneManagerInstance.OnGameRetry += this.HandleOnGameRetry;
+			this._gameSceneManagerInstance.OnGameOver += this.HandleGameOver;
 		}
 
 		private void Update() {
@@ -138,7 +138,7 @@ namespace TowerDefense.Enemy.Scripts {
 		private void CheckIfWaveIsComplete() {
 			if (this._activeEnemies.Count == 0) {
 				if (this._waveNumber == 10) {
-					this._sceneManagerInstance.ExecuteGameOver(true);
+					this._gameSceneManagerInstance.ExecuteGameOver(true);
 					return;
 				}
 				
