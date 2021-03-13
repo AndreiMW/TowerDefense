@@ -7798,9 +7798,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f402bf867c22424e94200cf87fa0e432, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyPrefab: {fileID: 622388311991351380, guid: 63924fbaca8bc6f4782f25d1b8961cd2, type: 3}
-  _enemyPoolSize: 50
-  _timeBetweenWaves: 2
+  _enemyComponentPrefab: {fileID: 622388311991351380, guid: 63924fbaca8bc6f4782f25d1b8961cd2, type: 3}
+  _enemyPoolSize: 30
+  _timeBetweenWaves: 5
 --- !u!1 &1740285876
 GameObject:
   m_ObjectHideFlags: 0
