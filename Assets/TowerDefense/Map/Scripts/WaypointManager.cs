@@ -30,10 +30,6 @@ namespace TowerDefense.Map.Scripts {
 			return this._waypoints[index];
 		}
 
-		public int GetWaypointsArrayLength() {
-			return this._waypoints.Length;
-		}
-		
 		#endregion
 	}
 }
