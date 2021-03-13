@@ -11,59 +11,60 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using TowerDefense.Inventory.Scripts;
-
 using TowerDefense.Managers;
 
 namespace TowerDefense.Enemy.Scripts {
 	public class EnemyWaveSpawner : MonoBehaviour {
+		public static EnemyWaveSpawner Instance;
 
 		[SerializeField] 
-		private Enemy _enemyPrefab;
+		private EnemyComponent _enemyComponentPrefab;
 
 		[SerializeField] 
 		private int _enemyPoolSize;
 		
 		[SerializeField] 
 		private float _timeBetweenWaves;
+		
+		private float _countdown = 3f;
+		private float _timeBetweenEnemies = 0.7f;
+		private float _enemyHealthIncrement = 0f;
+		private float _moneyAmountPerKill = 10f;
 
 		private bool _isWaveComplete = true;
 		private bool _shouldSpawnBossNextWave = false;
-
-		private float _countdown = 3;
+		private bool _isGameOver = false;
+		
 		private int _waveNumber = 0;
-		private int _numberOfEnemiesInWave = 3;
+		private int _numberOfEnemiesInWave = 10;
 
-		private Enemy[] _enemiesPool;
-
-		private float _timeBetweenEnemies = 0.7f;
-
-		private float _enemyHealthIncrement = 0f;
-		private float _moneyAmountPerKill = 10f;
+		private EnemyComponent[] _enemiesPool;
 
 		private ScoreManager _scoreManagerInstance;
 		private SceneManager _sceneManagerInstance;
 
-		private List<Enemy> _activeEnemies;
+		private List<EnemyComponent> _activeEnemies;
 		private Coroutine _startWaveCoroutine;
-
-		private bool _isGameOver = false;
 
 		#region Lifecycle
 
 		private void Awake() {
-			this._activeEnemies = new List<Enemy>();
-			this._enemiesPool = new Enemy[this._enemyPoolSize];
+			if (!Instance) {
+				Instance = this;
+			}
+			this._activeEnemies = new List<EnemyComponent>();
+			this._enemiesPool = new EnemyComponent[this._enemyPoolSize];
 
 			for (int i = 0; i < this._enemyPoolSize; i++) {
-				this._enemiesPool[i] = Instantiate(this._enemyPrefab, this.transform.position, this.transform.rotation);
-				Enemy enemy = this._enemiesPool[i];
-				enemy.gameObject.SetActive(false);
-				enemy.OnDeath += ()=> {
-					PlayerInventory.Instance.AddMoney(this._moneyAmountPerKill * (enemy.GetHealth()/100));
-					this._activeEnemies.Remove(enemy);
+				this._enemiesPool[i] = Instantiate(this._enemyComponentPrefab, this.transform.position, this.transform.rotation);
+				EnemyComponent enemyComponent = this._enemiesPool[i];
+				enemyComponent.gameObject.SetActive(false);
+				enemyComponent.OnDeath += ()=> {
 					if (this._isGameOver) {
 						return;
 					}
+					PlayerInventory.Instance.AddMoney(this._moneyAmountPerKill * (enemyComponent.GetHealth()/100));
+					this._activeEnemies.Remove(enemyComponent);
 					this.CheckIfWaveIsComplete();
 				};
 			}
@@ -90,6 +91,14 @@ namespace TowerDefense.Enemy.Scripts {
 		}
 
 		#endregion
+		
+		#region Public
+		
+		public EnemyComponent[] GetActiveEnemies() {
+			return this._activeEnemies.ToArray();
+		}
+		
+		#endregion
 
 		#region Private
 
@@ -105,22 +114,29 @@ namespace TowerDefense.Enemy.Scripts {
 				this.SpawnBoss();
 			} else {
 				for (int i = 0; i < enemiesToSpawn; i++) {
-					Enemy enemy = this._enemiesPool[i];
-					enemy.gameObject.SetActive(true);
-					enemy.SetHealth(enemy.GetHealth() + this._enemyHealthIncrement);
-					enemy.StartEnemyMovement();
-					this._activeEnemies.Add(enemy);
+					EnemyComponent enemyComponent = this._enemiesPool[i];
+					enemyComponent.gameObject.SetActive(true);
+					enemyComponent.SetHealth(enemyComponent.GetHealth() + this._enemyHealthIncrement);
+					enemyComponent.StartEnemyMovement();
+					this._activeEnemies.Add(enemyComponent);
 				
 					yield return new WaitForSeconds(this._timeBetweenEnemies);
 				}	
 			}
+		}
+		private void SpawnBoss() {
+			EnemyComponent bossEnemyComponent = this._enemiesPool[0];
+			bossEnemyComponent.gameObject.SetActive(true);
+			bossEnemyComponent.MakeBoss(2500);
+			bossEnemyComponent.StartEnemyMovement();
+			this._activeEnemies.Add(bossEnemyComponent);
+			this._shouldSpawnBossNextWave = false;
 		}
 
 		private void CheckIfWaveIsComplete() {
 			if (this._activeEnemies.Count == 0) {
 				if (this._waveNumber == 10) {
 					this._sceneManagerInstance.ExecuteGameOver(true);
-					StopCoroutine(this._startWaveCoroutine);
 					return;
 				}
 				
@@ -136,10 +152,15 @@ namespace TowerDefense.Enemy.Scripts {
 				}
 			}
 		}
+		
+		#region GameStateHandlers
 
 		private void HandleGameOver(bool isWon) {
-			StopCoroutine(this._startWaveCoroutine);
+			Debug.Log("GameOVerr");
 			this._isGameOver = true;
+			if (this._startWaveCoroutine != null) {
+				StopCoroutine(this._startWaveCoroutine);	
+			}
 		}
 
 		private void HandleOnGameRetry() {
@@ -157,15 +178,8 @@ namespace TowerDefense.Enemy.Scripts {
 				this._activeEnemies.Remove(this._activeEnemies[0]);
 			}
 		}
-
-		private void SpawnBoss() {
-			Enemy bossEnemy = this._enemiesPool[0];
-			bossEnemy.gameObject.SetActive(true);
-			bossEnemy.MakeBoss(2500);
-			bossEnemy.StartEnemyMovement();
-			this._shouldSpawnBossNextWave = false;
-		}
-
+		#endregion
+		
 		#endregion
 	}
 }

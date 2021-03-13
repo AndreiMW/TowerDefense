@@ -6,7 +6,7 @@
  */
 
 using System.Collections.Generic;
-
+using TowerDefense.Enemy.Scripts;
 using UnityEngine;
 
 using TowerDefense.Managers;
@@ -38,7 +38,7 @@ namespace TowerDefense.Tower.Scripts {
 
 		private float _fireCooldown = 0f;
 		
-		private Transform _currentLockedTarget;
+		private EnemyComponent _currentLockedTarget;
 
 		private List<int> _availableBulletsIndex;
 
@@ -74,7 +74,7 @@ namespace TowerDefense.Tower.Scripts {
 			if (this._isGameOver) {
 				return;
 			}
-			InvokeRepeating(nameof(this.UpdateTarget), 0f,0.1f);
+			InvokeRepeating(nameof(this.UpdateTarget), 0f,0.25f);
 		}
 
 		private void Update() {
@@ -109,31 +109,32 @@ namespace TowerDefense.Tower.Scripts {
 		#region Private
 
 		private void UpdateTarget() {
-			//singleton active enemies wave 
-			GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+			EnemyComponent[] enemies = EnemyWaveSpawner.Instance.GetActiveEnemies();
 			float shortestEnemyDistance = Mathf.Infinity;
-			GameObject nearestEnemy = null;
+			EnemyComponent nearestEnemyComponent = null;
 
 			for (int i = 0; i < enemies.Length; i++) {
 				float distanceToEnemy = Vector3.Distance(transform.position, enemies[i].transform.position);
 				if (distanceToEnemy < shortestEnemyDistance) {
 					shortestEnemyDistance = distanceToEnemy;
-					nearestEnemy = enemies[i];
+					nearestEnemyComponent = enemies[i];
 				}
 			}
 
-			if (nearestEnemy != null && shortestEnemyDistance <= this._range) {
-				this._currentLockedTarget = nearestEnemy.transform;
+			if (nearestEnemyComponent != null && nearestEnemyComponent.gameObject.activeInHierarchy && shortestEnemyDistance <= this._range) {
+				this._currentLockedTarget = nearestEnemyComponent;
 			} else {
 				this._currentLockedTarget = null;
 			}
 		}
 
 		private void LockTarget() {
-			Vector3 lookPosition = this._currentLockedTarget.transform.position - this.transform.position;
-			Quaternion lookRotation = Quaternion.LookRotation(lookPosition);
-			Vector3 rotation = Quaternion.Lerp(this.transform.rotation, lookRotation, Time.deltaTime * turnSpeed).eulerAngles;
-			this.transform.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+			if (_currentLockedTarget.gameObject.activeInHierarchy) {
+				Vector3 lookPosition = this._currentLockedTarget.transform.position - this.transform.position;
+				Quaternion lookRotation = Quaternion.LookRotation(lookPosition);
+				Vector3 rotation = Quaternion.Lerp(this.transform.rotation, lookRotation, Time.deltaTime * turnSpeed).eulerAngles;
+				this.transform.rotation = Quaternion.Euler(0f, rotation.y, 0f);	
+			}
 		}
 
 		private void Shoot() {
