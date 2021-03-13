@@ -26,7 +26,7 @@ namespace TowerDefense.Enemy.Scripts {
 		[SerializeField] 
 		private float _timeBetweenWaves;
 		
-		private float _countdown = 3f;
+		private float _countdown = 8f;
 		private float _timeBetweenEnemies = 0.7f;
 		private float _enemyHealthIncrement = 0f;
 		private float _moneyAmountPerKill = 10f;
@@ -36,7 +36,7 @@ namespace TowerDefense.Enemy.Scripts {
 		private bool _isGameOver = false;
 		
 		private int _waveNumber = 0;
-		private int _numberOfEnemiesInWave = 10;
+		private int _numberOfEnemiesInWave = 3;
 
 		private EnemyComponent[] _enemiesPool;
 
