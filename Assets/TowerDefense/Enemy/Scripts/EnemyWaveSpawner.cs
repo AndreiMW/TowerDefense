@@ -30,13 +30,14 @@ namespace TowerDefense.Enemy.Scripts {
 		private float _timeBetweenEnemies = 0.7f;
 		private float _enemyHealthIncrement = 0f;
 		private float _moneyAmountPerKill = 10f;
+		private float _bossHealth = 1500f;
 
 		private bool _isWaveComplete = true;
 		private bool _shouldSpawnBossNextWave = false;
 		private bool _isGameOver = false;
 		
 		private int _waveNumber = 0;
-		private int _numberOfEnemiesInWave = 3;
+		private int _numberOfEnemiesInWave = 2;
 
 		private EnemyComponent[] _enemiesPool;
 
@@ -63,7 +64,7 @@ namespace TowerDefense.Enemy.Scripts {
 					if (this._isGameOver) {
 						return;
 					}
-					PlayerInventory.Instance.AddMoney(this._moneyAmountPerKill * (enemyComponent.GetHealth()/100));
+					PlayerInventory.Instance.AddMoney(this._moneyAmountPerKill + this._moneyAmountPerKill * this._numberOfEnemiesInWave/4);
 					this._activeEnemies.Remove(enemyComponent);
 					this.CheckIfWaveIsComplete();
 				};
@@ -127,7 +128,8 @@ namespace TowerDefense.Enemy.Scripts {
 		private void SpawnBoss() {
 			EnemyComponent bossEnemyComponent = this._enemiesPool[0];
 			bossEnemyComponent.gameObject.SetActive(true);
-			bossEnemyComponent.MakeBoss(2500);
+			bossEnemyComponent.MakeBoss(this._bossHealth);
+			this._bossHealth += 750f;
 			bossEnemyComponent.StartEnemyMovement();
 			this._activeEnemies.Add(bossEnemyComponent);
 			this._shouldSpawnBossNextWave = false;
@@ -146,7 +148,7 @@ namespace TowerDefense.Enemy.Scripts {
 				if (this._waveNumber % 3 == 0) {
 					this._shouldSpawnBossNextWave = true;
 				} else {
-					this._numberOfEnemiesInWave += 2;
+					this._numberOfEnemiesInWave++;
 					this._enemyHealthIncrement += 20;
 					this._moneyAmountPerKill += 10;
 				}
