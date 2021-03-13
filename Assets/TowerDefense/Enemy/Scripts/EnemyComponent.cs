@@ -14,7 +14,7 @@ using TowerDefense.Map.Scripts;
 using TowerDefense.Tower.Scripts;
 
 namespace TowerDefense.Enemy.Scripts {
-	public class Enemy : MonoBehaviour {
+	public class EnemyComponent : MonoBehaviour {
 		
 		[SerializeField] 
 		private float _speed;
@@ -48,7 +48,7 @@ namespace TowerDefense.Enemy.Scripts {
 		}
 
 		private void Start() {
-			SceneManager.Instance.OnGameOver += (isWon) => this._shouldMove = false;
+			SceneManager.Instance.OnGameOver += isWon => this._shouldMove = false;
 		}
 
 		private void Update() {
@@ -77,6 +77,10 @@ namespace TowerDefense.Enemy.Scripts {
 
 		public void StartEnemyMovement() {
 			this._shouldMove = true;
+		}
+
+		public void StopEnemyMovement() {
+			this._shouldMove = false;
 		}
 
 		public float GetHealth() {
@@ -135,9 +139,9 @@ namespace TowerDefense.Enemy.Scripts {
 		}
 
 		private void Kill() {
+			this.OnDeath?.Invoke();
 			this.gameObject.SetActive(false);
 			this.ResetProperties();
-			this.OnDeath?.Invoke();
 		}
 
 		public void ResetProperties() {

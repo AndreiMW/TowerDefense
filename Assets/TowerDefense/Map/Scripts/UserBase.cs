@@ -36,13 +36,13 @@ namespace TowerDefense.Map.Scripts {
 
 		private void OnTriggerEnter(Collider other) {
 			if (other.tag.Equals("Enemy")) {
-				Enemy.Scripts.Enemy enemy = other.GetComponent<Enemy.Scripts.Enemy>();
-				this._baseHealthBar.UpdateHealth(this._health -= enemy.GetHealth()/4);
+				EnemyComponent enemyComponent = other.GetComponent<EnemyComponent>();
+				this._baseHealthBar.UpdateHealth(this._health -= enemyComponent.GetHealth()/4);
 
-				if (this._health <= 0) {
+				if (this._health <= 0.0f) {
 					SceneManager.Instance.ExecuteGameOver(false);
 				}
-				enemy.KillEnemy();
+				enemyComponent.KillEnemy();
 			}
 		}
 
