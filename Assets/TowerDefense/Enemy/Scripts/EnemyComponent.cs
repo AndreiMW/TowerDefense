@@ -79,10 +79,6 @@ namespace TowerDefense.Enemy.Scripts {
 			this._shouldMove = true;
 		}
 
-		public void StopEnemyMovement() {
-			this._shouldMove = false;
-		}
-
 		public float GetHealth() {
 			return this._health;
 		}
