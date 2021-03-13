@@ -12,6 +12,9 @@ using UnityEngine;
 namespace TowerDefense.Managers {
 	public class SceneManager : MonoBehaviour {
 		public static SceneManager Instance;
+		
+		[SerializeField] 
+		private Animator _blackScreenfadeOutAnimator;
 
 		public event Action<bool> OnGameOver;
 		public event Action OnGameRetry;
@@ -22,6 +25,7 @@ namespace TowerDefense.Managers {
 			if (!Instance) {
 				Instance = this;
 			}
+			this._blackScreenfadeOutAnimator.Play("black_screen_fade_out");
 		}
 
 		#endregion
