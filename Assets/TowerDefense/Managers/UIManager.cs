@@ -11,8 +11,8 @@ using TMPro;
 using UnityEngine.UI;
 
 namespace TowerDefense.Managers {
-	public class ScoreManager : MonoBehaviour {
-		public static ScoreManager Instance;
+	public class UIManager : MonoBehaviour {
+		public static UIManager Instance;
 		[SerializeField] 
 		private TMP_Text _countdownToNextWaveText;
 		

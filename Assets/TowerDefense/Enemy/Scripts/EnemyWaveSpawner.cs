@@ -40,7 +40,7 @@ namespace TowerDefense.Enemy.Scripts {
 
 		private EnemyComponent[] _enemiesPool;
 
-		private ScoreManager _scoreManagerInstance;
+		private UIManager _uiManagerInstance;
 		private SceneManager _sceneManagerInstance;
 
 		private List<EnemyComponent> _activeEnemies;
@@ -71,7 +71,7 @@ namespace TowerDefense.Enemy.Scripts {
 		}
 
 		private void Start() {
-			this._scoreManagerInstance = ScoreManager.Instance;
+			this._uiManagerInstance = UIManager.Instance;
 			this._sceneManagerInstance = SceneManager.Instance;
 			
 			this._sceneManagerInstance.OnGameRetry += this.HandleOnGameRetry;
@@ -85,7 +85,7 @@ namespace TowerDefense.Enemy.Scripts {
 					this._countdown = this._timeBetweenWaves;
 					this._isWaveComplete = false;
 				}
-				this._scoreManagerInstance.SetCountDownText(Mathf.FloorToInt(this._countdown + 1));
+				this._uiManagerInstance.SetCountDownText(Mathf.FloorToInt(this._countdown + 1));
 				this._countdown -= Time.deltaTime;	
 			}
 		}
@@ -104,8 +104,8 @@ namespace TowerDefense.Enemy.Scripts {
 
 		private void SpawnWave() {
 			this._waveNumber++;
-			this._scoreManagerInstance.SetWaveNumberText(this._waveNumber);
-			this._scoreManagerInstance.HideNextWaveCountdownTimer();
+			this._uiManagerInstance.SetWaveNumberText(this._waveNumber);
+			this._uiManagerInstance.HideNextWaveCountdownTimer();
 			this._startWaveCoroutine = StartCoroutine(this.SpawnEnemiesFromPool(this._numberOfEnemiesInWave));
 		}
 
@@ -141,7 +141,7 @@ namespace TowerDefense.Enemy.Scripts {
 				}
 				
 				this._isWaveComplete = true;
-				this._scoreManagerInstance.ShowNextWaveCountdownTimer();
+				this._uiManagerInstance.ShowNextWaveCountdownTimer();
 				
 				if (this._waveNumber % 3 == 0) {
 					this._shouldSpawnBossNextWave = true;
@@ -166,9 +166,9 @@ namespace TowerDefense.Enemy.Scripts {
 		private void HandleOnGameRetry() {
 			this._waveNumber = 0;
 			this._numberOfEnemiesInWave = 3;
-			this._scoreManagerInstance.SetWaveNumberText(this._waveNumber);
+			this._uiManagerInstance.SetWaveNumberText(this._waveNumber);
 			this._isWaveComplete = true;
-			this._scoreManagerInstance.ShowNextWaveCountdownTimer();
+			this._uiManagerInstance.ShowNextWaveCountdownTimer();
 			PlayerInventory.Instance.ResetMoneyAmount();
 			this._isGameOver = false;
 			int activeEnemiesCount = this._activeEnemies.Count;
