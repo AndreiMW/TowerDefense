@@ -181,7 +181,7 @@ namespace TowerDefense.Enemy.Scripts {
 		/// </summary>
 		private void HandleOnGameRetry() {
 			this._waveNumber = 0;
-			this._numberOfEnemiesInWave = 3;
+			this._numberOfEnemiesInWave = 2;
 			
 			this._isWaveComplete = true;
 			this._isGameOver = false;
