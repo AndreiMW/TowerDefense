@@ -10,6 +10,8 @@ using UnityEngine.UI;
 
 using TMPro;
 
+using TowerDefense.Inventory.Scripts;
+
 namespace TowerDefense.Managers {
 	public class UIManager : MonoBehaviour {
 		public static UIManager Instance;
@@ -93,7 +95,7 @@ namespace TowerDefense.Managers {
 		/// <param name="isWon"></param>
 		private void HandleOnGameOverEvent(bool isWon) {
 			this._gameResultView.alpha = 1f;
-
+			PlayerInventory.Instance.DisableInventoryButtons();
 			//if the game is won, display "You won!", else display "Game over".
 			this._gameResultViewText.text = isWon ? "You won!" : "Game over";
 
@@ -103,8 +105,11 @@ namespace TowerDefense.Managers {
 		/// The listener for retry button onClick.
 		/// </summary>
 		private void RetryButtonClickListener() {
-			this._gameResultView.alpha = 0f;
-			GameSceneManager.Instance.ExecuteGameRetry();
+			if (this._gameResultView.alpha.Equals(1)) {
+				PlayerInventory.Instance.EnableInventoryButtons();
+				this._gameResultView.alpha = 0f;
+				GameSceneManager.Instance.ExecuteGameRetry();	
+			}
 		}
 		
 		#endregion

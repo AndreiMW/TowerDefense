@@ -88,6 +88,24 @@ namespace TowerDefense.Inventory.Scripts {
 			this._moneyAmount = this._originalMoneyAmount;
 			this.SetMoneyAmountText();
 		}
+
+		/// <summary>
+		/// Disable inventory buttons so user cannot place towers.
+		/// </summary>
+		public void DisableInventoryButtons() {
+			this._basicTowerButton.enabled = false;
+			this._fastFireRateTowerButton.enabled = false;
+			this._powerTowerButton.enabled = false;
+		}
+
+		/// <summary>
+		/// Enable inventory buttons.
+		/// </summary>
+		public void EnableInventoryButtons() {
+			this._basicTowerButton.enabled = true; 
+			this._fastFireRateTowerButton.enabled = true; 
+			this._powerTowerButton.enabled = true;
+		}
 		
 		#endregion
 		
