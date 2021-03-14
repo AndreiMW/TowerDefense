@@ -19,9 +19,14 @@ namespace TowerDefense.Enemy.Scripts {
 
 		[SerializeField] 
 		private EnemyComponent _enemyComponentPrefab;
+		private EnemyComponent[] _enemiesPool;
+		private List<EnemyComponent> _activeEnemies;
 
 		[SerializeField] 
 		private int _enemyPoolSize;
+		
+		private int _waveNumber = 0;
+		private int _numberOfEnemiesInWave = 2;
 		
 		[SerializeField] 
 		private float _timeBetweenWaves;
@@ -33,18 +38,13 @@ namespace TowerDefense.Enemy.Scripts {
 		private float _bossHealth = 1500f;
 
 		private bool _isWaveComplete = true;
-		private bool _shouldSpawnBossNextWave = false;
+		private bool _shouldSpawnBoss = false;
 		private bool _isGameOver = false;
-		
-		private int _waveNumber = 0;
-		private int _numberOfEnemiesInWave = 2;
 
-		private EnemyComponent[] _enemiesPool;
+		private UIManager _uiManagerInstance => UIManager.Instance;
 
-		private UIManager _uiManagerInstance;
-		private GameSceneManager _gameSceneManagerInstance;
+		private GameSceneManager _gameSceneManagerInstance => GameSceneManager.Instance;
 
-		private List<EnemyComponent> _activeEnemies;
 		private Coroutine _startWaveCoroutine;
 
 		#region Lifecycle
@@ -56,6 +56,7 @@ namespace TowerDefense.Enemy.Scripts {
 			this._activeEnemies = new List<EnemyComponent>();
 			this._enemiesPool = new EnemyComponent[this._enemyPoolSize];
 
+			//instantiate enemy pool
 			for (int i = 0; i < this._enemyPoolSize; i++) {
 				this._enemiesPool[i] = Instantiate(this._enemyComponentPrefab, this.transform.position, this.transform.rotation);
 				EnemyComponent enemyComponent = this._enemiesPool[i];
@@ -72,9 +73,6 @@ namespace TowerDefense.Enemy.Scripts {
 		}
 
 		private void Start() {
-			this._uiManagerInstance = UIManager.Instance;
-			this._gameSceneManagerInstance = GameSceneManager.Instance;
-			
 			this._gameSceneManagerInstance.OnGameRetry += this.HandleOnGameRetry;
 			this._gameSceneManagerInstance.OnGameOver += this.HandleGameOver;
 		}
@@ -95,6 +93,10 @@ namespace TowerDefense.Enemy.Scripts {
 		
 		#region Public
 		
+		/// <summary>
+		/// Get the list of active enemies.
+		/// </summary>
+		/// <returns>Array of active enemies.</returns>
 		public EnemyComponent[] GetActiveEnemies() {
 			return this._activeEnemies.ToArray();
 		}
@@ -103,38 +105,44 @@ namespace TowerDefense.Enemy.Scripts {
 
 		#region Private
 
+		/// <summary>
+		/// Spawn a wave.
+		/// </summary>
 		private void SpawnWave() {
 			this._waveNumber++;
 			this._uiManagerInstance.SetWaveNumberText(this._waveNumber);
 			this._uiManagerInstance.HideNextWaveCountdownTimer();
-			this._startWaveCoroutine = StartCoroutine(this.SpawnEnemiesFromPool(this._numberOfEnemiesInWave));
+			this._startWaveCoroutine = StartCoroutine(this.ActivateEnemiesFromPool(this._numberOfEnemiesInWave));
 		}
 
-		private IEnumerator SpawnEnemiesFromPool(int enemiesToSpawn) {
-			if (this._shouldSpawnBossNextWave) {
-				this.SpawnBoss();
+		/// <summary>
+		/// Activate enemies from pool.
+		/// </summary>
+		/// <param name="numberOfEnemiesToActivate">Number of enemies to activate</param>
+		/// <returns></returns>
+		private IEnumerator ActivateEnemiesFromPool(int numberOfEnemiesToActivate) {
+			if (this._shouldSpawnBoss) {
+				this.ActivateBossEnemy();
 			} else {
-				for (int i = 0; i < enemiesToSpawn; i++) {
-					EnemyComponent enemyComponent = this._enemiesPool[i];
-					enemyComponent.gameObject.SetActive(true);
-					enemyComponent.SetHealth(enemyComponent.GetHealth() + this._enemyHealthIncrement);
-					enemyComponent.StartEnemyMovement();
-					this._activeEnemies.Add(enemyComponent);
-				
+				for (int i = 0; i < numberOfEnemiesToActivate; i++) {
+					EnemyComponent enemy = this._enemiesPool[i];
+					this.ActivateEnemy(enemy, false);
 					yield return new WaitForSeconds(this._timeBetweenEnemies);
 				}	
 			}
 		}
-		private void SpawnBoss() {
+		
+		/// <summary>
+		/// Activates a boss enemy.
+		/// </summary>
+		private void ActivateBossEnemy() {
 			EnemyComponent bossEnemyComponent = this._enemiesPool[0];
-			bossEnemyComponent.gameObject.SetActive(true);
-			bossEnemyComponent.MakeBoss(this._bossHealth);
-			this._bossHealth += 750f;
-			bossEnemyComponent.StartEnemyMovement();
-			this._activeEnemies.Add(bossEnemyComponent);
-			this._shouldSpawnBossNextWave = false;
+			this.ActivateEnemy(bossEnemyComponent,true);
 		}
 
+		/// <summary>
+		/// Checks if the wave is completed when an enemy dies.
+		/// </summary>
 		private void CheckIfWaveIsComplete() {
 			if (this._activeEnemies.Count == 0) {
 				if (this._waveNumber == 10) {
@@ -146,7 +154,7 @@ namespace TowerDefense.Enemy.Scripts {
 				this._uiManagerInstance.ShowNextWaveCountdownTimer();
 				
 				if (this._waveNumber % 3 == 0) {
-					this._shouldSpawnBossNextWave = true;
+					this._shouldSpawnBoss = true;
 				} else {
 					this._numberOfEnemiesInWave++;
 					this._enemyHealthIncrement += 20;
@@ -157,29 +165,58 @@ namespace TowerDefense.Enemy.Scripts {
 		
 		#region GameStateHandlers
 
+		/// <summary>
+		/// Logic to execute if the game is over.
+		/// </summary>
+		/// <param name="isWon">If game was won or lost.</param>
 		private void HandleGameOver(bool isWon) {
-			Debug.Log("GameOVerr");
 			this._isGameOver = true;
 			if (this._startWaveCoroutine != null) {
 				StopCoroutine(this._startWaveCoroutine);	
 			}
 		}
 
+		/// <summary>
+		/// Logic to execute when the user presses the retry button.
+		/// </summary>
 		private void HandleOnGameRetry() {
 			this._waveNumber = 0;
 			this._numberOfEnemiesInWave = 3;
-			this._uiManagerInstance.SetWaveNumberText(this._waveNumber);
+			
 			this._isWaveComplete = true;
+			this._isGameOver = false;
+			
+			this._uiManagerInstance.SetWaveNumberText(this._waveNumber);
 			this._uiManagerInstance.ShowNextWaveCountdownTimer();
 			PlayerInventory.Instance.ResetMoneyAmount();
-			this._isGameOver = false;
-			int activeEnemiesCount = this._activeEnemies.Count;
 			
+			int activeEnemiesCount = this._activeEnemies.Count;
 			for (int i = 0; i < activeEnemiesCount; i++) {
 				this._activeEnemies[0].ResetProperties();
 				this._activeEnemies.Remove(this._activeEnemies[0]);
 			}
 		}
+
+		/// <summary>
+		/// Activates an enemy from the enemy pool.
+		/// </summary>
+		/// <param name="enemy">The enemy to activate.</param>
+		/// <param name="isBoss">Is the enemy a boss?</param>
+		private void ActivateEnemy(EnemyComponent enemy, bool isBoss) {
+			enemy.gameObject.SetActive(true);
+			enemy.StartEnemyMovement();
+			
+			this._activeEnemies.Add(enemy);
+
+			if (isBoss) {
+				enemy.MakeBoss(this._bossHealth);
+				this._bossHealth += 750f;
+				this._shouldSpawnBoss = false;
+			} else {
+				enemy.SetHealth(enemy.GetHealth() + this._enemyHealthIncrement);
+			}
+		}
+		
 		#endregion
 		
 		#endregion

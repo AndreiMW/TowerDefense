@@ -7,7 +7,7 @@
 
 using UnityEngine;
 
-namespace TowerDefense.Map.Scripts {
+namespace TowerDefense.Managers {
 	public class CameraManager : MonoBehaviour {
 
 		[SerializeField]

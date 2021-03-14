@@ -13,6 +13,7 @@ using TowerDefense.Managers;
 
 namespace TowerDefense.Tower.Scripts {
 	public class PlayerTower : MonoBehaviour {
+		[Header("Tower properties")]
 		[SerializeField] 
 		private float _range;
 
@@ -22,6 +23,7 @@ namespace TowerDefense.Tower.Scripts {
 		[SerializeField] 
 		private float _rateOfFire = 1;
 
+		[Header("Bullet properties")]
 		[SerializeField] 
 		private Bullet _bulletPrefab;
 		
@@ -49,12 +51,14 @@ namespace TowerDefense.Tower.Scripts {
 		private void Awake() {
 			this._availableBulletsIndex = new List<int>();
 			
+			//mark all bullets as available
 			for (int i = 0; i < this._bulletPoolSize; i++) {
 				this._availableBulletsIndex.Add(i);
 			}
 
 			this._bulletsPool = new Bullet[this._bulletPoolSize];
 
+			//instantiate bullet pool
 			for (int i = 0; i < this._bulletPoolSize; i++) {
 				this._bulletsPool[i] = Instantiate(this._bulletPrefab, this._bulletSpawnPoint.position, Quaternion.identity);
 
@@ -66,14 +70,12 @@ namespace TowerDefense.Tower.Scripts {
 				bullet.OnBulletReachedEnemy += ()=> this._availableBulletsIndex.Add(bullet.GetBulletIndex());
 			}
 
-			GameSceneManager.Instance.OnGameOver += this.HandleGameOver;
-			GameSceneManager.Instance.OnGameRetry += this.HandleRetry;
 		}
 
 		private void Start() {
-			if (this._isGameOver) {
-				return;
-			}
+			GameSceneManager.Instance.OnGameOver += this.HandleGameOver;
+			GameSceneManager.Instance.OnGameRetry += this.HandleRetry;
+			
 			InvokeRepeating(nameof(this.UpdateTarget), 0f,0.25f);
 		}
 
@@ -100,6 +102,10 @@ namespace TowerDefense.Tower.Scripts {
 		
 		#region Public
 
+		/// <summary>
+		/// Get the range of the tower.
+		/// </summary>
+		/// <returns>The tower range.</returns>
 		public float GetRange() {
 			return this._range;
 		}
@@ -108,6 +114,9 @@ namespace TowerDefense.Tower.Scripts {
 		
 		#region Private
 
+		/// <summary>
+		/// Search for all active enemies and update to the closest one.
+		/// </summary>
 		private void UpdateTarget() {
 			EnemyComponent[] enemies = EnemyWaveSpawner.Instance.GetActiveEnemies();
 			float shortestEnemyDistance = Mathf.Infinity;
@@ -128,8 +137,11 @@ namespace TowerDefense.Tower.Scripts {
 			}
 		}
 
+		/// <summary>
+		/// Lock tower to the closest enemy.
+		/// </summary>
 		private void LockTarget() {
-			if (_currentLockedTarget.gameObject.activeInHierarchy) {
+			if (this._currentLockedTarget.gameObject.activeInHierarchy) {
 				Vector3 lookPosition = this._currentLockedTarget.transform.position - this.transform.position;
 				Quaternion lookRotation = Quaternion.LookRotation(lookPosition);
 				Vector3 rotation = Quaternion.Lerp(this.transform.rotation, lookRotation, Time.deltaTime * turnSpeed).eulerAngles;
@@ -137,21 +149,35 @@ namespace TowerDefense.Tower.Scripts {
 			}
 		}
 
+		/// <summary>
+		/// Activate bullet from available bullets pool and shoot towards locked enemy.
+		/// </summary>
 		private void Shoot() {
 			int bulletIndex = this._availableBulletsIndex[0];
 			this._availableBulletsIndex.Remove(bulletIndex);
 			this._bulletsPool[bulletIndex].gameObject.SetActive(true);
 			this._bulletsPool[bulletIndex].SetTargetToFollow(this._currentLockedTarget);
 		}
+		
+		/// <summary>
+		/// Gizmo to see the range in the editor.
+		/// </summary>
 		private void OnDrawGizmosSelected() {
 			Gizmos.color = Color.red;
 			Gizmos.DrawWireSphere(this.transform.position, this._range);
 		}
 
+		/// <summary>
+		/// Logic to execute when the game is over.
+		/// </summary>
+		/// <param name="isWon">Is the game won?</param>
 		private void HandleGameOver(bool isWon) {
 			this._isGameOver = true;
 		}
 
+		/// <summary>
+		/// Logic to execute when retries game.
+		/// </summary>
 		private void HandleRetry() {
 			Destroy(this.gameObject);
 		}

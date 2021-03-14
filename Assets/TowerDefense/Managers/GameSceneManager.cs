@@ -25,6 +25,7 @@ namespace TowerDefense.Managers {
 			if (!Instance) {
 				Instance = this;
 			}
+
 			this._blackScreenfadeOutAnimator.Play("black_screen_fade_out");
 		}
 
@@ -32,10 +33,17 @@ namespace TowerDefense.Managers {
 		
 		#region Public
 
+		/// <summary>
+		/// Execute the game over event.
+		/// </summary>
+		/// <param name="isWon">Is the game won?</param>
 		public void ExecuteGameOver(bool isWon) {
 			this.OnGameOver?.Invoke(isWon);
 		}
 
+		/// <summary>
+		/// Execute the game retry event.
+		/// </summary>
 		public void ExecuteGameRetry() {
 			this.OnGameRetry?.Invoke();
 		}

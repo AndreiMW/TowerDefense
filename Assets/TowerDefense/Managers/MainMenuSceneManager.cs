@@ -6,6 +6,7 @@
  */
 
 using System.Collections;
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -19,6 +20,7 @@ namespace TowerDefense.Managers {
 		#region Lifecycle
 
 		private void Start() {
+			//loads game scene but does not activate it.
 			this._gameSceneLoadingAsyncOperation = SceneManager.LoadSceneAsync("GameScene");
 			this._gameSceneLoadingAsyncOperation.allowSceneActivation = false;
 		}
@@ -33,6 +35,10 @@ namespace TowerDefense.Managers {
 		
 		#region Private
 
+		/// <summary>
+		/// When the fade in animation for the black image overlay finished, then it activates the GameScene.
+		/// </summary>
+		/// <returns></returns>
 		private IEnumerator ActivateSceneOnAnimationEnd() {
 			this._blackScreenFadeInAnimator.Play("black_screen_fade_in");
 			yield return new WaitForSeconds(this._blackScreenFadeInAnimator.GetCurrentAnimatorStateInfo(0).length);
