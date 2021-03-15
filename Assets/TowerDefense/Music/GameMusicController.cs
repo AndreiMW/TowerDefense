@@ -10,6 +10,7 @@ using UnityEngine;
 namespace TowerDefense {
 	public class GameMusicController : MonoBehaviour {
 		private static GameMusicController s_instance;
+		
 		#region Lifecycle
 		
 		private void Awake() {
